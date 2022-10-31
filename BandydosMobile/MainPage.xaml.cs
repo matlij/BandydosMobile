@@ -1,63 +1,85 @@
 ﻿using BandydosMobile.MSALClient;
 using Microsoft.Identity.Client;
+using System.Windows.Input;
 
 namespace BandydosMobile;
 
 public partial class MainPage : ContentPage
 {
-	public MainPage()
-	{
-		InitializeComponent();
-	}
+    private readonly MainPageViewModel _viewModel;
 
-    private async void OnSignInClicked(object sender, EventArgs e)
+    public MainPage(MainPageViewModel viewModel)
+    {
+        InitializeComponent();
+
+        BindingContext = _viewModel = viewModel;
+    }
+
+    protected override void OnAppearing()
+    {
+        _viewModel.SingInCommand.Execute(null);
+    }
+}
+
+public class MainPageViewModel
+{
+
+    public MainPageViewModel(Authenticator authenticator)
+    {
+        Authenticator = authenticator;
+        SingInCommand = new Command(async () =>
+        {
+            try
+            {
+                //var result = await Authenticator.SingInASync();
+                await Shell.Current.GoToAsync(nameof(EventsPage));
+            }
+            catch (Exception e)
+            {
+                await Application.Current.MainPage.DisplayAlert("Inloggning misslyckades", e.Message, "Stäng");
+            }
+        });
+    }
+
+    private Authenticator Authenticator { get; }
+    public ICommand SingInCommand { get; }
+}
+
+public class Authenticator
+{
+    public async Task<AuthenticationResult> SingInASync(bool useEmbedded = false)
     {
         try
         {
-            PCAWrapper.Instance.UseEmbedded = this.useEmbedded.IsChecked;
+            PCAWrapper.Instance.UseEmbedded = useEmbedded;
             // First attempt silent login, which checks the cache for an existing valid token.
             // If this is very first time or user has signed out, it will throw MsalUiRequiredException
-            AuthenticationResult result = await PCAWrapper.Instance.AcquireTokenSilentAsync(AppConstants.Scopes).ConfigureAwait(false);
+            var result = await PCAWrapper.Instance.AcquireTokenSilentAsync(AppConstants.Scopes);
 
-            // call Web API to get the data
-            string data = await CallWebAPIWithToken(result).ConfigureAwait(false);
-
-            // show the data
-            await ShowMessage("AcquireTokenSilent call", data).ConfigureAwait(false);
+            return result;
         }
         catch (MsalUiRequiredException)
         {
             // This executes UI interaction to obtain token
-            AuthenticationResult result = await PCAWrapper.Instance.AcquireTokenInteractiveAsync(AppConstants.Scopes).ConfigureAwait(false);
-
-            // call Web API to get the data
-            string data = await CallWebAPIWithToken(result).ConfigureAwait(false);
-
-            // show the data
-            await ShowMessage("AcquireTokenInteractive call", data).ConfigureAwait(false);
-        }
-        catch (Exception ex)
-        {
-            await ShowMessage("Exception in AcquireTokenSilent", ex.Message).ConfigureAwait(false);
+            var result = await PCAWrapper.Instance.AcquireTokenInteractiveAsync(AppConstants.Scopes);
+            return result;
         }
     }
-    private async void SignOutButton_Clicked(object sender, EventArgs e)
+
+    public Task SignOutAsync()
     {
-        _ = await PCAWrapper.Instance.SignOutAsync().ContinueWith(async (t) =>
-        {
-            await ShowMessage("Signed Out", "Sign out complete").ConfigureAwait(false);
-        }).ConfigureAwait(false);
+        return PCAWrapper.Instance.SignOutAsync();
     }
 
     // Call the web api. The code is left in the Ux file for easy to see.
-    private async Task<string> CallWebAPIWithToken(AuthenticationResult authResult)
+    public async Task<string> CallWebAPIWithToken(AuthenticationResult authResult)
     {
         try
         {
             //get data from API
-            HttpClient client = new HttpClient();
+            var client = new HttpClient();
             // create the request
-            HttpRequestMessage message = new HttpRequestMessage(HttpMethod.Get, "https://graph.microsoft.com/v1.0/me");
+            var message = new HttpRequestMessage(HttpMethod.Get, "https://graph.microsoft.com/v1.0/me");
 
             // ** Add Authorization Header **
             message.Headers.Add("Authorization", authResult.CreateAuthorizationHeader());
@@ -71,15 +93,6 @@ public partial class MainPage : ContentPage
         {
             return ex.ToString();
         }
-    }
-
-    // display the message
-    private async Task ShowMessage(string title, string message)
-    {
-        _ = this.Dispatcher.Dispatch(async () =>
-        {
-            await DisplayAlert(title, message, "OK").ConfigureAwait(false);
-        });
     }
 }
 

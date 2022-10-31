@@ -22,7 +22,7 @@
                 HorizontalOptions="Center" />
 
             <Label
-                Text="Logga in:"
+                Text="Logga in via ditt Microsoft konto"
                 SemanticProperties.HeadingLevel="Level2"
                 SemanticProperties.Description="Welcome to dot net Multi platform App U I"
                 FontSize="18"
@@ -34,10 +34,9 @@
             </StackLayout>
 
             <Button 
-                x:Name="SignInButton"
-                Text="Sign in"
+                Command="{Binding SingInCommand}"
+                Text="Logga in"
                 SemanticProperties.Hint="Sign In"
-                Clicked="OnSignInClicked"
                 HorizontalOptions="Center" />
 
         </VerticalStackLayout>
