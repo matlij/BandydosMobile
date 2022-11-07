@@ -1,7 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="BandydosMobile.MainPage">
+             xmlns:viewmodel="clr-namespace:BandydosMobile.ViewModels"
+             x:Class="BandydosMobile.MainPage"
+             x:DataType="viewmodel:MainPageViewModel">
 
     <ScrollView>
         <VerticalStackLayout
@@ -34,7 +36,7 @@
             </StackLayout>
 
             <Button 
-                Command="{Binding SingInCommand}"
+                Command="{Binding NavigateCommand}"
                 Text="Logga in"
                 SemanticProperties.Hint="Sign In"
                 HorizontalOptions="Center" />

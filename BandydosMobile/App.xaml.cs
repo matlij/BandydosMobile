@@ -1,4 +1,6 @@
-﻿namespace BandydosMobile;
+﻿using BandydosMobile.Repository;
+
+namespace BandydosMobile;
 
 public partial class App : Application
 {

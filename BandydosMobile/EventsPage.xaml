@@ -1,22 +1,57 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:models="lr-namespace:Bandydos.Dto"
+             xmlns:local="clr-namespace:BandydosMobile.ViewModels"
+             xmlns:models="clr-namespace:BandydosMobile.Models"
              x:Class="BandydosMobile.EventsPage"
+             x:DataType="local:EventsViewModel"
              Title="EventsPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
 
-        <ListView ItemsSource="{Binding Items}">
-            <ListView.ItemTemplate>
+    <RefreshView Command="{Binding LoadItemsCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
+        <CollectionView x:Name="ItemsListView"
+                ItemsSource="{Binding Items}"
+                SelectionMode="None">
+            <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <TextCell Text="{Binding EventType}"
-                              Detail="{Binding Date}" />
+                    <Grid Padding="10" 
+                          ColumnSpacing="15" 
+                          x:DataType="models:Event"
+                          BackgroundColor="{Binding CurrentUserIsAttending, Converter={StaticResource BoolToColorConverter}}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <!--<ColumnDefinition Width="3*" />-->
+                            <!--<ColumnDefinition Width="*" />-->
+                        </Grid.ColumnDefinitions>
+                        <Label  Text="{Binding EventType}" 
+                                LineBreakMode="NoWrap" 
+                                Style="{DynamicResource ListItemTextStyle}" 
+                                FontSize="16"
+                                FontAttributes="Bold"/>
+                        <Label  Grid.Row="1"
+                                Text="{Binding DateString}" 
+                                LineBreakMode="NoWrap"
+                                Style="{DynamicResource ListItemDetailTextStyle}"
+                                FontSize="13" />
+                        <Label  Grid.Row="2"
+                                Text="{Binding UsersAttending}" 
+                                LineBreakMode="NoWrap"
+                                Style="{DynamicResource ListItemDetailTextStyle}"
+                                FontSize="13" />
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer 
+                                    NumberOfTapsRequired="1"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type local:EventsViewModel}}, Path=ItemTapped}"		
+                                    CommandParameter="{Binding .}">
+                            </TapGestureRecognizer>
+                        </Grid.GestureRecognizers>
+                    </Grid>
                 </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-    </VerticalStackLayout>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </RefreshView>
 </ContentPage>

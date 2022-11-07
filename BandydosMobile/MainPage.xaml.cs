@@ -1,4 +1,7 @@
 ﻿using BandydosMobile.MSALClient;
+using BandydosMobile.ViewModels;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Microsoft.Identity.Client;
 using System.Windows.Input;
 
@@ -15,34 +18,10 @@ public partial class MainPage : ContentPage
         BindingContext = _viewModel = viewModel;
     }
 
-    protected override void OnAppearing()
-    {
-        _viewModel.SingInCommand.Execute(null);
-    }
-}
-
-public class MainPageViewModel
-{
-
-    public MainPageViewModel(Authenticator authenticator)
-    {
-        Authenticator = authenticator;
-        SingInCommand = new Command(async () =>
-        {
-            try
-            {
-                //var result = await Authenticator.SingInASync();
-                await Shell.Current.GoToAsync(nameof(EventsPage));
-            }
-            catch (Exception e)
-            {
-                await Application.Current.MainPage.DisplayAlert("Inloggning misslyckades", e.Message, "Stäng");
-            }
-        });
-    }
-
-    private Authenticator Authenticator { get; }
-    public ICommand SingInCommand { get; }
+    //protected override void OnAppearing()
+    //{
+    //    _viewModel.SingInCommand.Execute(null);
+    //}
 }
 
 public class Authenticator

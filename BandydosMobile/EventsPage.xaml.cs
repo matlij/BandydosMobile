@@ -1,4 +1,5 @@
 using Bandydos.Dto;
+using BandydosMobile.ViewModels;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -11,60 +12,15 @@ public partial class EventsPage : ContentPage
 {
     private readonly EventsViewModel _viewModel;
 
-    public EventsPage()
+    public EventsPage(EventsViewModel viewModel)
 	{
 		InitializeComponent();
 
-        BindingContext = _viewModel = new EventsViewModel();
+        BindingContext = _viewModel = viewModel;
     }
 
-    protected override async void OnAppearing()
+    protected override void OnAppearing()
     {
-        await _viewModel.RefreshDataAsync();
+        _viewModel.OnAppearing();
     }
-}
-
-public static class Constants
-{
-    public const string RestUrl = "https://bandydosapi.azurewebsites.net/api";
-    public const string Code = "j4qDYPfWu-AwM4-6685Jms49wN0L2TXjkdRsvlwV3M4GAzFuiE6pcw==";
-}
-
-public class EventsViewModel
-{
-	private readonly HttpClient _client;
-
-
-	public ObservableCollection<EventDto> Items { get; } = new ObservableCollection<EventDto>();
-
-	public EventsViewModel()
-	{
-		_client = new HttpClient();
-	}
-
-    public async Task RefreshDataAsync()
-    {
-        Items.Clear();
-
-        var uri = new Uri($"{Constants.RestUrl}/event?code={Constants.Code}");
-        try
-        {
-            HttpResponseMessage response = await _client.GetAsync(uri);
-            if (response.IsSuccessStatusCode)
-            {
-                string content = await response.Content.ReadAsStringAsync();
-                var items = JsonSerializer.Deserialize<ObservableCollection<EventDto>>(content);
-
-                foreach (var item in items)
-                {
-                    Items.Add(item);
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-    }
-
 }
