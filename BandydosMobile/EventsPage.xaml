@@ -7,8 +7,17 @@
              x:DataType="local:EventsViewModel"
              Title="EventsPage">
 
-    <RefreshView Command="{Binding LoadItemsCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
-        <CollectionView x:Name="ItemsListView"
+    <!--<RefreshView Command="{Binding LoadItemsCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">-->
+        <ListView ItemsSource="{Binding Items}" 
+                  RowHeight="60">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="models:Event">
+                    <TextCell Text="{Binding EventType}"
+                              Detail="{Binding DateString}" />
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <!--<CollectionView x:Name="ItemsListView"
                 ItemsSource="{Binding Items}"
                 SelectionMode="None">
             <CollectionView.ItemTemplate>
@@ -24,8 +33,8 @@
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
-                            <!--<ColumnDefinition Width="3*" />-->
-                            <!--<ColumnDefinition Width="*" />-->
+                            --><!--<ColumnDefinition Width="3*" />-->
+                            <!--<ColumnDefinition Width="*" />--><!--
                         </Grid.ColumnDefinitions>
                         <Label  Text="{Binding EventType}" 
                                 LineBreakMode="NoWrap" 
@@ -52,6 +61,6 @@
                     </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
-        </CollectionView>
-    </RefreshView>
+        </CollectionView>-->
+    <!--</RefreshView>-->
 </ContentPage>

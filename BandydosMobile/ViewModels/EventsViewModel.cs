@@ -47,11 +47,20 @@ public partial class EventsViewModel : BaseViewModel
         }
         catch (Exception ex)
         {
-            Debug.WriteLine("Load events faild: " + ex);
+            await DisplayAlert("Hämta events misslycakdes", ex.Message);
         }
         finally
         {
             IsBusy = false;
+        }
+    }
+
+    private static async Task DisplayAlert(string title, string message)
+    {
+        var page = Application.Current?.MainPage;
+        if (page != null)
+        {
+            await page.DisplayAlert(title, message, "Stäng");
         }
     }
 
