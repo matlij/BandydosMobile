@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.31611.283
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BandydosMobile", "BandydosMobile\BandydosMobile.csproj", "{8BC73FEF-00E2-49F4-8F15-4D95FF792E81}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bandydos.Dto", "Bandydos.Dto\Bandydos.Dto.csproj", "{CC6B6D07-80AE-4F74-BAA5-9113274A8199}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bandydos.Dto", "Bandydos.Dto\Bandydos.Dto.csproj", "{CC6B6D07-80AE-4F74-BAA5-9113274A8199}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

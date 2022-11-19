@@ -8,9 +8,9 @@ namespace BandydosMobile.Models
     {
         public Guid Id { get; set; }
         public DateTimeOffset Date { get; set; }
-        public string Time => $"Tid: {Date.TimeOfDay:hh\\:mm}";
+        public string Time => $"{Date.TimeOfDay:hh\\:mm}";
         public string DateString => $"{Date.Date.ToLongDateString()} - {Date.TimeOfDay:hh\\:mm}";
-        public string DaysLeft { get => $"Days left: {(Date - DateTime.Now).Days}"; }
+        public string DaysLeft { get => $"Dagar kvar: {(Date - DateTime.Now).Days}"; }
         public EventType? EventType { get; set; }
         public Address? Address { get; set; }
         public ObservableCollection<EventUser> Users { get; set; } = new ObservableCollection<EventUser>();

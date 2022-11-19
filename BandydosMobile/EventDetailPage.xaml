@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:BandydosMobile.ViewModels"
+             xmlns:models="clr-namespace:BandydosMobile.Models"
+             x:DataType="viewmodel:EventDetailViewModel"
+             x:Class="BandydosMobile.EventDetailPage"
+             Title="EventDetailPage">
+    <VerticalStackLayout>
+        <Grid Padding="10" ColumnSpacing="15">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Label Grid.Row="0" Text="Tid:" FontSize="16" FontAttributes="Bold" />
+            <Label Grid.Row="0" Grid.Column="1" Text="{Binding Event.Time}" />
+            <Label Grid.Row="1" Text="Datum:" FontSize="16" FontAttributes="Bold" />
+            <Label Grid.Row="1" Grid.Column="1" Text="{Binding Event.DateString}"/>
+            <Label Grid.Row="2" Text="Plats:" FontSize="16" FontAttributes="Bold" />
+            <Label Grid.Row="2" Grid.Column="1" Text="{Binding Event.Address.FullAddress}" FontSize="16" TextColor="Blue" TextDecorations="Underline">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding AddressTappedCommand}" />
+                </Label.GestureRecognizers>
+            </Label>
+        </Grid>
+    </VerticalStackLayout>
+</ContentPage>

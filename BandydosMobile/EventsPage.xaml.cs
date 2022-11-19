@@ -1,10 +1,4 @@
-using Bandydos.Dto;
 using BandydosMobile.ViewModels;
-using System;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Net.Http;
-using System.Text.Json;
 
 namespace BandydosMobile;
 
@@ -19,8 +13,8 @@ public partial class EventsPage : ContentPage
         BindingContext = _viewModel = viewModel;
     }
 
-    protected override void OnAppearing()
+    protected override async void OnAppearing()
     {
-        _viewModel.OnAppearing();
+        await _viewModel.LoadItems();
     }
 }

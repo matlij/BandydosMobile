@@ -26,9 +26,11 @@ public static class MauiProgram
 
         builder.Services.AddSingleton<MainPageViewModel>();
         builder.Services.AddTransient<EventsViewModel>();
+        builder.Services.AddTransient<EventDetailViewModel>();
 
         builder.Services.AddSingleton<MainPage>();
         builder.Services.AddTransient<EventsPage>();
+        builder.Services.AddTransient<EventDetailPage>();
 
         builder.Services.AddAutoMapper(typeof(BandydosProfile));
 
