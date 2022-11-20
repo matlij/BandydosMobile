@@ -6,7 +6,7 @@
              x:DataType="viewmodel:EventDetailViewModel"
              x:Class="BandydosMobile.EventDetailPage"
              Title="EventDetailPage">
-    <VerticalStackLayout>
+    <VerticalStackLayout Padding="20">
         <Grid Padding="10" ColumnSpacing="15">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -29,5 +29,18 @@
                 </Label.GestureRecognizers>
             </Label>
         </Grid>
+        
+        <ListView ItemsSource="{Binding Users}">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="models:EventUser">
+                    <TextCell Text="{Binding UserName}"
+                              Detail="{Binding UserReplyString}" />
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        
+        <Button Text="{Binding AttendBtnText}"
+                Command="{Binding AttendTappedCommand}"
+                HorizontalOptions="FillAndExpand" />
     </VerticalStackLayout>
 </ContentPage>

@@ -29,7 +29,7 @@ namespace BandydosMobile.Services
             return await Task.FromResult(CrudResult.Ok);
         }
 
-        public Task<bool> UpdateAsync(Event @event)
+        public Task<bool> UpdateAsync(string id, Event @event)
         {
             var uri = GetUri($"{UriConstants.EventUri}/{@event.Id}");
 

@@ -22,12 +22,14 @@ namespace BandydosMobile.ViewModels
         [ObservableProperty]
         private ObservableCollection<EventUser> users;
 
-        private readonly IEventDataStore _dataStore;
+        private readonly IEventDataStore _eventDataStore;
+        private readonly IDataStore<EventUser> _eventUserDataStore;
         private readonly User _user;
 
-        public EventDetailViewModel(IEventDataStore dataStore)
+        public EventDetailViewModel(IEventDataStore dataStore, IDataStore<EventUser> eventUserDataStore)
         {
-            _dataStore = dataStore;
+            _eventDataStore = dataStore;
+            _eventUserDataStore = eventUserDataStore;
             _user = new User()
             {
                 Id = Guid.Parse("937ac36b-c115-4574-9b41-d7a8b1c65cfd")
@@ -85,7 +87,7 @@ namespace BandydosMobile.ViewModels
                         : EventReply.Attending;
                 }
 
-                var success = await _dataStore.UpdateAsync(_event);
+                var success = await _eventUserDataStore.UpdateAsync(_event.Id.ToString(), eventUser);
                 if (success)
                 {
                     UpdateProperties(_event);
@@ -110,7 +112,7 @@ namespace BandydosMobile.ViewModels
             try
             {
                 //User = await _userLoginService.GetUserFromLocalDb();
-                var @event = await _dataStore.GetAsync(_itemId);
+                var @event = await _eventDataStore.GetAsync(_itemId);
                 ItemId = @event.Id.ToString();
                 Title = @event.EventType?.ToString() ?? "Event";
                 UpdateProperties(@event);

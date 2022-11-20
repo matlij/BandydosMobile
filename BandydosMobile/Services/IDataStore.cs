@@ -7,7 +7,7 @@ namespace BandydosMobile.Services
     {
         Task<CrudResult> AddAsync(T item);
 
-        Task<bool> UpdateAsync(T item);
+        Task<bool> UpdateAsync(string id, T item);
 
         Task<bool> DeleteAsync(string id);
 

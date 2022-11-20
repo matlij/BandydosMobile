@@ -17,6 +17,21 @@ namespace BandydosMobile.Models
         public bool IsOwner { get; set; }
         public EventReply UserReply { get; set; }
 
+        public string UserReplyString 
+        { 
+            get
+            {
+                return UserReply switch
+                {
+                    EventReply.NotReplied => "Ej svarat",
+                    EventReply.Attending => "På",
+                    EventReply.NotAttending => "Av",
+                    _ => "Oklart",
+                };
+            }
+        }
+
+
         public bool Equals(EventUser other)
         {
             if (other == null)

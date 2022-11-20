@@ -31,7 +31,7 @@ namespace BandydosMobile.Services
             return result;
         }
 
-        public async Task<bool> UpdateAsync(User item)
+        public async Task<bool> UpdateAsync(string id, User item)
         {
             var uri = new UriBuilder(UriConstants.BaseUri)
             {
