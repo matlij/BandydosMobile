@@ -36,7 +36,7 @@
             </StackLayout>
 
             <Button 
-                Command="{Binding NavigateCommand}"
+                Command="{Binding LoginAndGoToEventsCommand}"
                 Text="Logga in"
                 SemanticProperties.Hint="Sign In"
                 HorizontalOptions="Center" />

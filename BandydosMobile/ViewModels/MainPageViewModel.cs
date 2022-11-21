@@ -1,6 +1,6 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using BandydosMobile.Services;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Windows.Input;
 
 namespace BandydosMobile.ViewModels;
 
@@ -10,20 +10,16 @@ public partial class MainPageViewModel : ObservableObject
     public MainPageViewModel(Authenticator authenticator)
     {
         Authenticator = authenticator;
-        //SingInCommand = new Command(async () =>
-        //{
-        //});
     }
 
     private Authenticator Authenticator { get; }
-    //public ICommand SingInCommand { get; }
 
     [RelayCommand]
-    async Task Navigate()
+    public async Task LoginAndGoToEventsAsync()
     {
         try
         {
-            //var result = await Authenticator.SingInASync();
+            var result = await Authenticator.SingInASync();
             await Shell.Current.GoToAsync(nameof(EventsPage));
         }
         catch (Exception e)

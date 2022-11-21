@@ -4,12 +4,12 @@ namespace BandydosMobile.Models
 {
     public class EventUser : IEquatable<EventUser>
     {
-        public EventUser(Guid userId)
+        public EventUser(string userId)
         {
             UserId = userId;
         }
 
-        public Guid UserId { get; }
+        public string UserId { get; }
         public string UserName { get; set; }
 
         public bool IsAttending => UserReply == EventReply.Attending;

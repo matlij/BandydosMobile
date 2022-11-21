@@ -33,7 +33,7 @@ public partial class EventsViewModel : BaseViewModel
             var items = await _dataStore.GetAsync();
             foreach (var @event in items.OrderBy(i => i.Date))
             {
-                @event.CurrentUserIsAttending = UserIsAttendingEvent(@event, Guid.NewGuid()); //TODO
+                //@event.CurrentUserIsAttending = UserIsAttendingEvent(@event, Guid.NewGuid()); //TODO
                 Items.Add(@event);
             }
         }
@@ -60,7 +60,7 @@ public partial class EventsViewModel : BaseViewModel
         await Shell.Current.GoToAsync($"{nameof(EventDetailPage)}?ItemId={@event.Id}");
     }
 
-    private static bool UserIsAttendingEvent(Event @event, Guid userId)
+    private static bool UserIsAttendingEvent(Event @event, string userId)
     {
         var user = @event.Users.FirstOrDefault(u => u.UserId == userId);
 

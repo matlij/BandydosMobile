@@ -1,6 +1,5 @@
 ﻿using BandydosMobile.Models;
 using BandydosMobile.Services;
-using BandydosMobile.ViewModels;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
@@ -24,16 +23,15 @@ namespace BandydosMobile.ViewModels
 
         private readonly IEventDataStore _eventDataStore;
         private readonly IDataStore<EventUser> _eventUserDataStore;
-        private readonly User _user;
+        private readonly Authenticator _authenticator;
+        private string? _userId;
+        private string? _userName;
 
-        public EventDetailViewModel(IEventDataStore dataStore, IDataStore<EventUser> eventUserDataStore)
+        public EventDetailViewModel(IEventDataStore dataStore, IDataStore<EventUser> eventUserDataStore, Authenticator authenticator)
         {
             _eventDataStore = dataStore;
             _eventUserDataStore = eventUserDataStore;
-            _user = new User()
-            {
-                Id = Guid.Parse("937ac36b-c115-4574-9b41-d7a8b1c65cfd") //TODO
-            };
+            _authenticator = authenticator;
             Users = new ObservableCollection<EventUser>();
         }
 
@@ -70,12 +68,12 @@ namespace BandydosMobile.ViewModels
             {
                 IsBusy = true;
 
-                var eventUser = _event.Users.FirstOrDefault(u => u.UserId == _user.Id);
+                var eventUser = _event.Users.FirstOrDefault(u => u.UserId == _userId);
                 if (eventUser == null)
                 {
-                    var newEventUser = new EventUser(_user.Id)
+                    var newEventUser = new EventUser(_userId)
                     {
-                        UserName = _user.Name,
+                        UserName = _userName,
                         UserReply = EventReply.Attending
                     };
                     _event.Users.Add(newEventUser);
@@ -111,16 +109,23 @@ namespace BandydosMobile.ViewModels
         {
             try
             {
-                //User = await _userLoginService.GetUserFromLocalDb();
+                var user = await _authenticator.SingInASync();
+                _userName = user.ClaimsPrincipal.FindFirst("name")?.Value ?? "Namn saknas";
+                _userId = user.UniqueId;
+
                 var @event = await _eventDataStore.GetAsync(_itemId);
-                Title = @event.EventType?.ToString();
+                Title = @event?.EventType?.ToString();
                 ItemId = @event.Id.ToString();
                 Title = @event.EventType?.ToString() ?? "Event";
                 UpdateProperties(@event);
             }
             catch (Exception e)
             {
-                Debug.WriteLine("Failed to Load Item. " + e.Message);
+                var page = Application.Current?.MainPage;
+                if (page != null)
+                {
+                    await page.DisplayAlert("Hämta användare eller event misslyckades", e.Message, "Stäng");
+                }
             }
         }
 
@@ -129,7 +134,7 @@ namespace BandydosMobile.ViewModels
             Event = @event;
             UpdateEventUserCollection(@event);
 
-            var user = @event.Users.FirstOrDefault(u => u.UserId == _user.Id);
+            var user = @event.Users.FirstOrDefault(u => u.UserId == _userId);
             IsAttending = user?.IsAttending ?? false;
             AttendBtnText = IsAttending
                 ? "Av"

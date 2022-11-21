@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-using System;
 using Microsoft.Identity.Client;
 using Microsoft.IdentityModel.Abstractions;
+using System.Diagnostics;
 
 namespace BandydosMobile.MSALClient
 {
@@ -127,7 +127,7 @@ namespace BandydosMobile.MSALClient
             /// <param name="entry">Log Entry values</param>
             public void Log(LogEntry entry)
             {
-                Console.WriteLine(entry.Message);
+                Debug.WriteLine(entry.Message);
             }
         }
     }
