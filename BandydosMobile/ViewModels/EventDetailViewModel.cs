@@ -32,13 +32,13 @@ namespace BandydosMobile.ViewModels
             _eventUserDataStore = eventUserDataStore;
             _user = new User()
             {
-                Id = Guid.Parse("937ac36b-c115-4574-9b41-d7a8b1c65cfd")
+                Id = Guid.Parse("937ac36b-c115-4574-9b41-d7a8b1c65cfd") //TODO
             };
             Users = new ObservableCollection<EventUser>();
         }
 
         [RelayCommand]
-        private async Task AddressTapped()
+        public async Task AddressTapped()
         {
             try
             {
@@ -64,7 +64,7 @@ namespace BandydosMobile.ViewModels
         }
 
         [RelayCommand]
-        private async void AttendTapped(object obj)
+        public async void AttendTapped(object obj)
         {
             try
             {
@@ -113,6 +113,7 @@ namespace BandydosMobile.ViewModels
             {
                 //User = await _userLoginService.GetUserFromLocalDb();
                 var @event = await _eventDataStore.GetAsync(_itemId);
+                Title = @event.EventType?.ToString();
                 ItemId = @event.Id.ToString();
                 Title = @event.EventType?.ToString() ?? "Event";
                 UpdateProperties(@event);
@@ -131,8 +132,8 @@ namespace BandydosMobile.ViewModels
             var user = @event.Users.FirstOrDefault(u => u.UserId == _user.Id);
             IsAttending = user?.IsAttending ?? false;
             AttendBtnText = IsAttending
-                ? "UnAttend"
-                : "Attend";
+                ? "Av"
+                : "Ja e på!";
         }
 
         private void UpdateEventUserCollection(Event @event)

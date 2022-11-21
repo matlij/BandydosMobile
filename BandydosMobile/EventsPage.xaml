@@ -5,11 +5,9 @@
              xmlns:models="clr-namespace:BandydosMobile.Models"
              x:DataType="viewmodel:EventsViewModel"
              x:Class="BandydosMobile.EventsPage"
-             Title="EventsPage">
+             Title="Event">
 
-    <StackLayout>
-        <Button Text="Click me!"
-            Command="{Binding ItemTappedCommand}"/>
+    <ScrollView>
         <CollectionView ItemsSource="{Binding Items}">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="{x:Type models:Event}">
@@ -31,5 +29,5 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-    </StackLayout>
+    </ScrollView>
 </ContentPage>

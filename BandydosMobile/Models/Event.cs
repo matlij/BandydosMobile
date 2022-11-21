@@ -9,7 +9,7 @@ namespace BandydosMobile.Models
         public Guid Id { get; set; }
         public DateTimeOffset Date { get; set; }
         public string Time => $"{Date.TimeOfDay:hh\\:mm}";
-        public string DateString => $"{Date.Date.ToLongDateString()} - {Date.TimeOfDay:hh\\:mm}";
+        public string DateString => $"{Date.Date.ToLongDateString()}";
         public string DaysLeft { get => $"Dagar kvar: {(Date - DateTime.Now).Days}"; }
         public EventType? EventType { get; set; }
         public Address? Address { get; set; }

@@ -3,6 +3,7 @@ using BandydosMobile.Models.Translation;
 using BandydosMobile.Repository;
 using BandydosMobile.Services;
 using BandydosMobile.ViewModels;
+using CommunityToolkit.Maui;
 
 namespace BandydosMobile;
 
@@ -18,6 +19,8 @@ public static class MauiProgram
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
 			});
+
+        builder.UseMauiApp<App>().UseMauiCommunityToolkit();
 
         builder.Services.AddTransient<Authenticator>();
         builder.Services.AddTransient<IEventDataStore, EventDataStore>();
