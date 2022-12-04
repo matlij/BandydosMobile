@@ -6,28 +6,32 @@
              x:DataType="viewmodel:EventsViewModel"
              x:Class="BandydosMobile.EventsPage"
              Title="Event">
-
-    <ScrollView>
-        <CollectionView ItemsSource="{Binding Items}">
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="{x:Type models:Event}">
-                    <Frame>
-                    <Frame.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:EventsViewModel}}, Path=ItemTappedCommand}"
-                                              CommandParameter="{Binding .}"/>
-                    </Frame.GestureRecognizers>
-                    <StackLayout>
-                        <Label Text="{Binding EventType}" 
-                               FontSize="16"
-                               FontAttributes="Bold"/>
-                        <Label Grid.Row="1"
-                               Text="{Binding DateString}"/>
-                        <Label Grid.Row="2"
-                               Text="{Binding UsersAttending}"/>
-                    </StackLayout>
-                    </Frame>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-    </ScrollView>
+    <StackLayout>
+        <StackLayout Padding="20">
+            <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}"/>
+        </StackLayout>
+        <ScrollView>
+            <CollectionView ItemsSource="{Binding Items}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="{x:Type models:Event}">
+                        <Frame>
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:EventsViewModel}}, Path=ItemTappedCommand}"
+                                                      CommandParameter="{Binding .}"/>
+                            </Frame.GestureRecognizers>
+                            <StackLayout>
+                                <Label Text="{Binding EventType}" 
+                                       FontSize="16"
+                                       FontAttributes="Bold"/>
+                                <Label Grid.Row="1"
+                                       Text="{Binding DateString}"/>
+                                <Label Grid.Row="2"
+                                       Text="{Binding UsersAttending}"/>
+                            </StackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </ScrollView>
+    </StackLayout>
 </ContentPage>

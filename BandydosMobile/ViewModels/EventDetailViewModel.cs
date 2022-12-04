@@ -80,6 +80,7 @@ namespace BandydosMobile.ViewModels
                 }
                 else
                 {
+                    eventUser.UserName = _userName;
                     eventUser.UserReply = eventUser.IsAttending
                         ? EventReply.NotAttending
                         : EventReply.Attending;
@@ -110,7 +111,7 @@ namespace BandydosMobile.ViewModels
             try
             {
                 var user = await _authenticator.SingInASync();
-                _userName = user.ClaimsPrincipal.FindFirst("name")?.Value ?? "Namn saknas";
+                _userName = user.ClaimsPrincipal.FindFirst("name")?.Value ?? user.Account.Username;
                 _userId = user.UniqueId;
 
                 var @event = await _eventDataStore.GetAsync(_itemId);

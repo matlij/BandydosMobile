@@ -12,8 +12,8 @@
             <toolkit:BoolToObjectConverter x:Key="BoolToObjectConverter" TrueObject="Green" FalseObject="Red" />
         </ResourceDictionary>
     </ContentPage.Resources>
-    <VerticalStackLayout Padding="20">
-        <Grid Padding="10" ColumnSpacing="15">
+    <StackLayout Padding="30" Spacing="20">
+        <Grid ColumnSpacing="15" VerticalOptions="Start">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -24,11 +24,11 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <Label Grid.Row="0" Text="Tid:" FontSize="16" FontAttributes="Bold" />
+            <Label Grid.Row="0" Text="Tid:" FontAttributes="Bold" />
             <Label Grid.Row="0" Grid.Column="1" Text="{Binding Event.Time}" />
-            <Label Grid.Row="1" Text="Datum:" FontSize="16" FontAttributes="Bold" />
+            <Label Grid.Row="1" Text="Datum:" FontAttributes="Bold" />
             <Label Grid.Row="1" Grid.Column="1" Text="{Binding Event.DateString}"/>
-            <Label Grid.Row="2" Text="Plats:" FontSize="16" FontAttributes="Bold" />
+            <Label Grid.Row="2" Text="Plats:" FontAttributes="Bold" />
             <Label Grid.Row="2" Grid.Column="1" Text="{Binding Event.Address.FullAddress}" FontSize="16" TextColor="Blue" TextDecorations="Underline">
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding AddressTappedCommand}" />
@@ -36,17 +36,22 @@
             </Label>
         </Grid>
 
-        <ListView ItemsSource="{Binding Users}">
-            <ListView.ItemTemplate>
-                <DataTemplate x:DataType="models:EventUser">
-                    <TextCell Text="{Binding UserName}"
-                              Detail="{Binding UserReplyString}"/>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-        
-        <Button Text="{Binding AttendBtnText}"
-                Command="{Binding AttendTappedCommand}"
-                HorizontalOptions="FillAndExpand" />
-    </VerticalStackLayout>
+        <StackLayout Spacing="10" VerticalOptions="CenterAndExpand">
+            <Label Text="Näravro:" FontAttributes="Bold"/>
+            <ListView ItemsSource="{Binding Users}">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="models:EventUser">
+                        <TextCell Text="{Binding UserName}"
+                                  Detail="{Binding UserReplyString}"/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+
+        <StackLayout VerticalOptions="End">
+            <Button Text="{Binding AttendBtnText}"
+                    Command="{Binding AttendTappedCommand}"
+                    HorizontalOptions="FillAndExpand"/>
+        </StackLayout>
+    </StackLayout>
 </ContentPage>

@@ -18,7 +18,7 @@ namespace BandydosMobile.MSALClient
         /// <summary>
         /// Scopes defining what app can access in the graph
         /// </summary>
-        internal static string[] Scopes = { "User.Read" };
+        internal static string[] Scopes = { "User.Read", "profile" };
 
 
     }
