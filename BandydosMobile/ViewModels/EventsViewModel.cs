@@ -30,7 +30,7 @@ public partial class EventsViewModel : BaseViewModel
         try
         {
             Items.Clear();
-            var items = await _dataStore.GetAsync();
+            var items = await _dataStore.GetAsync(DateTime.Now);
             foreach (var @event in items.OrderBy(i => i.Date))
             {
                 //@event.CurrentUserIsAttending = UserIsAttendingEvent(@event, Guid.NewGuid()); //TODO

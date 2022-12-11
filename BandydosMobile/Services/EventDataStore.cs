@@ -3,7 +3,6 @@ using Bandydos.Dto;
 using Bandydos.Dto.Enums;
 using BandydosMobile.Models;
 using BandydosMobile.Models.Constants;
-using BandydosMobile.Models.Translation;
 using BandydosMobile.Repository;
 
 namespace BandydosMobile.Services
@@ -55,9 +54,13 @@ namespace BandydosMobile.Services
             return _mapper.Map<Event>(result);
         }
 
-        public async Task<IEnumerable<Event>> GetAsync(bool forceRefresh = false)
+        public async Task<IEnumerable<Event>> GetAsync(DateTime? from = null, bool forceRefresh = false)
         {
             var uri = GetUri(UriConstants.EventUri);
+            if (from.HasValue)
+            {
+                uri.Query += $"&from={from.Value.Date}";
+            }
 
             return await GetEvents(uri);
         }
@@ -82,7 +85,7 @@ namespace BandydosMobile.Services
         {
             var result = await _repository.GetAsync<IEnumerable<EventDto>>(uri.ToString());
 
-            return result.Select(r => _mapper.Map<Event>(r));
+            return result?.Select(r => _mapper.Map<Event>(r));
 
         }
     }

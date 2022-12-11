@@ -33,7 +33,7 @@ namespace BandydosMobile.Services
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<EventUser>> GetAsync(bool forceRefresh = false)
+        public Task<IEnumerable<EventUser>> GetAsync(DateTime? from = null, bool forceRefresh = false)
         {
             throw new NotImplementedException();
         }

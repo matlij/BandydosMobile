@@ -7,7 +7,7 @@
              x:Class="BandydosMobile.EventsPage"
              Title="Event">
     <StackLayout>
-        <StackLayout Padding="20">
+        <StackLayout>
             <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}"/>
         </StackLayout>
         <ScrollView>

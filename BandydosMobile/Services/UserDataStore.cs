@@ -51,7 +51,7 @@ namespace BandydosMobile.Services
             return _repository.DeleteAsync(uri.ToString());
         }
 
-        public async Task<IEnumerable<User>> GetAsync(bool forceRefresh = false)
+        public async Task<IEnumerable<User>> GetAsync(DateTime? from = null, bool forceRefresh = false)
         {
             var uri = new UriBuilder(UriConstants.BaseUri)
             {
@@ -66,7 +66,7 @@ namespace BandydosMobile.Services
         {
             var uri = new UriBuilder(UriConstants.BaseUri)
             {
-                Path = $"{UriConstants.UserUri}/{id}"
+                Path = $"{UriConstants.UserUri}/{id}",
             };
 
             var result = await _repository.GetAsync<UserDto>(uri.ToString());

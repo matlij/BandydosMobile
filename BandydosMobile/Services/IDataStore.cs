@@ -13,7 +13,7 @@ namespace BandydosMobile.Services
 
         Task<T> GetAsync(string id);
 
-        Task<IEnumerable<T>> GetAsync(bool forceRefresh = false);
+        Task<IEnumerable<T>> GetAsync(DateTime? from = null, bool forceRefresh = false);
     }
 
     public interface IEventDataStore : IDataStore<Event>
