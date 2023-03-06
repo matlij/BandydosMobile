@@ -7,11 +7,11 @@
              x:DataType="viewmodel:EventDetailViewModel"
              x:Class="BandydosMobile.EventDetailPage"
              Title="{Binding Title}">
-    <ContentPage.Resources>
+    <!--<ContentPage.Resources>
         <ResourceDictionary>
-            <toolkit:BoolToObjectConverter x:Key="BoolToObjectConverter" TrueObject="Green" FalseObject="Red" />
+            <toolkit:BoolToObjectConverter x:Key="BoolToObjectConverter" TrueObject="DarkRed" FalseObject="Green" />
         </ResourceDictionary>
-    </ContentPage.Resources>
+    </ContentPage.Resources>-->    
     <StackLayout Padding="30" Spacing="20">
         <Grid ColumnSpacing="15" VerticalOptions="Start">
             <Grid.RowDefinitions>
@@ -37,7 +37,7 @@
         </Grid>
 
         <StackLayout Spacing="10" VerticalOptions="CenterAndExpand">
-            <Label Text="Näravro:" FontAttributes="Bold"/>
+            <Label Text="Närvaro:" FontAttributes="Bold"/>
             <ListView ItemsSource="{Binding Users}">
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="models:EventUser">
@@ -51,6 +51,7 @@
         <StackLayout VerticalOptions="End">
             <Button Text="{Binding AttendBtnText}"
                     Command="{Binding AttendTappedCommand}"
+                    BackgroundColor="{Binding AttendBtnColor}"
                     HorizontalOptions="FillAndExpand"/>
         </StackLayout>
     </StackLayout>

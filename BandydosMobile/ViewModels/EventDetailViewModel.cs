@@ -15,6 +15,8 @@ namespace BandydosMobile.ViewModels
         [ObservableProperty]
         private string _attendBtnText;
         [ObservableProperty]
+        private Color _attendBtnColor;
+        [ObservableProperty]
         private bool _isAttending;
         [ObservableProperty]
         private string _itemId;
@@ -64,6 +66,7 @@ namespace BandydosMobile.ViewModels
         [RelayCommand]
         public async void AttendTapped(object obj)
         {
+
             try
             {
                 IsBusy = true;
@@ -139,7 +142,10 @@ namespace BandydosMobile.ViewModels
             IsAttending = user?.IsAttending ?? false;
             AttendBtnText = IsAttending
                 ? "Av"
-                : "Ja e på!";
+                : "På!";
+            AttendBtnColor = IsAttending
+                ? Colors.Red
+                : Colors.Green;
         }
 
         private void UpdateEventUserCollection(Event @event)
