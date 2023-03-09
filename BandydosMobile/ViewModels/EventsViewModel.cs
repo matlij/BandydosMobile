@@ -60,7 +60,7 @@ public partial class EventsViewModel : BaseViewModel
     [RelayCommand]
     async Task GoToUserProfile()
     {
-        await Shell.Current.GoToAsync(nameof(MainPage));
+        await Shell.Current.GoToAsync(nameof(LoginPage));
     }
 
     private static bool UserIsAttendingEvent(Event @event, string userId)

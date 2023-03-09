@@ -3,8 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodel="clr-namespace:BandydosMobile.ViewModels"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             x:Class="BandydosMobile.MainPage"
-             x:DataType="viewmodel:MainPageViewModel">
+             x:Class="BandydosMobile.LoginPage"
+             x:DataType="viewmodel:LoginPageViewModel">
 
     <ContentPage.Resources>
         <ResourceDictionary>

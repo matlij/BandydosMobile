@@ -2,11 +2,11 @@
 
 namespace BandydosMobile;
 
-public partial class MainPage : ContentPage
+public partial class LoginPage : ContentPage
 {
-    private readonly MainPageViewModel _viewModel;
+    private readonly LoginPageViewModel _viewModel;
 
-    public MainPage(MainPageViewModel viewModel)
+    public LoginPage(LoginPageViewModel viewModel)
     {
         InitializeComponent();
 

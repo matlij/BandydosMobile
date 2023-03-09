@@ -4,7 +4,7 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace BandydosMobile.ViewModels;
 
-public partial class MainPageViewModel : BaseViewModel
+public partial class LoginPageViewModel : BaseViewModel
 {
     [ObservableProperty]
     private string _userName;
@@ -12,7 +12,7 @@ public partial class MainPageViewModel : BaseViewModel
     private string _loginStatus;
     [ObservableProperty]
     private bool _isLoggedIn;
-    public MainPageViewModel(Authenticator authenticator)
+    public LoginPageViewModel(Authenticator authenticator)
     {
         Authenticator = authenticator;
     }
