@@ -9,6 +9,9 @@ namespace BandydosMobile.ViewModels;
 public partial class EventsViewModel : BaseViewModel
 {
     [ObservableProperty]
+    protected bool isRefreshing;
+
+    [ObservableProperty]
     private Event? selectedItem;
 
     [ObservableProperty]
@@ -23,9 +26,10 @@ public partial class EventsViewModel : BaseViewModel
         _dataStore = dataStore;
     }
 
+    [RelayCommand]
     public async Task LoadItems()
     {
-        IsBusy = true;
+        IsRefreshing = true;
 
         try
         {
@@ -43,21 +47,20 @@ public partial class EventsViewModel : BaseViewModel
         }
         finally
         {
-            IsBusy = false;
+            IsRefreshing = false;
         }
     }
-
-    public void OnAppearing()
-    {
-        IsBusy = true;
-        SelectedItem = null;
-    }
-
 
     [RelayCommand]
     async Task ItemTapped(Event @event)
     {
         await Shell.Current.GoToAsync($"{nameof(EventDetailPage)}?ItemId={@event.Id}");
+    }
+
+    [RelayCommand]
+    async Task GoToUserProfile()
+    {
+        await Shell.Current.GoToAsync(nameof(MainPage));
     }
 
     private static bool UserIsAttendingEvent(Event @event, string userId)

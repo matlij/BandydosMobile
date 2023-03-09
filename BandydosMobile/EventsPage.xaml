@@ -6,32 +6,32 @@
              x:DataType="viewmodel:EventsViewModel"
              x:Class="BandydosMobile.EventsPage"
              Title="Event">
-    <StackLayout>
+    <Shell.TitleView>
         <StackLayout>
-            <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}"/>
+            <Button Text="PROFIL" Command="{Binding GoToUserProfileCommand}" HeightRequest="50" WidthRequest="100" HorizontalOptions="End"></Button>
         </StackLayout>
-        <ScrollView>
-            <CollectionView ItemsSource="{Binding Items}">
+    </Shell.TitleView>
+    <StackLayout>
+        <RefreshView IsRefreshing="{Binding IsRefreshing}"
+                     Command="{Binding LoadItemsCommand}">
+            <CollectionView ItemsSource="{Binding Items}"
+                        VerticalOptions="FillAndExpand">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="{x:Type models:Event}">
                         <Frame>
                             <Frame.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:EventsViewModel}}, Path=ItemTappedCommand}"
-                                                      CommandParameter="{Binding .}"/>
+                                                  CommandParameter="{Binding .}"/>
                             </Frame.GestureRecognizers>
                             <StackLayout>
-                                <Label Text="{Binding EventType}" 
-                                       FontSize="16"
-                                       FontAttributes="Bold"/>
-                                <Label Grid.Row="1"
-                                       Text="{Binding DateString}"/>
-                                <Label Grid.Row="2"
-                                       Text="{Binding UsersAttending}"/>
+                                <Label Text="{Binding EventType}" FontSize="16" FontAttributes="Bold"/>
+                                <Label Grid.Row="1" Text="{Binding DateString}"/>
+                                <Label Grid.Row="2" Text="{Binding UsersAttending}"/>
                             </StackLayout>
                         </Frame>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-        </ScrollView>
+        </RefreshView>
     </StackLayout>
 </ContentPage>

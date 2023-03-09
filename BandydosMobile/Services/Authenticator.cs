@@ -5,6 +5,19 @@ namespace BandydosMobile.Services;
 
 public class Authenticator
 {
+    public async Task<string?> GetLoggedInUserNameAsync()
+    {
+        try
+        {
+            var result = await PCAWrapper.Instance.GetAccountAsync();
+            return result?.Username;
+        }
+        catch (Exception e)
+        {
+            return "Nått gick fel! " + e.Message;
+        }
+    }
+
     public async Task<AuthenticationResult> SingInASync(bool useEmbedded = false)
     {
         try

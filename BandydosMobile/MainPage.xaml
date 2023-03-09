@@ -2,20 +2,23 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodel="clr-namespace:BandydosMobile.ViewModels"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="BandydosMobile.MainPage"
              x:DataType="viewmodel:MainPageViewModel">
 
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
     <ScrollView>
         <VerticalStackLayout
-            Spacing="25"
+            Spacing="35"
             Padding="30,0"
             VerticalOptions="Center">
 
-            <Image
-                Source="dotnet_bot.png"
-                SemanticProperties.Description="Cute dot net bot waving hi to you!"
-                HeightRequest="200"
-                HorizontalOptions="Center" />
+            <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
 
             <Label
                 Text="Bandydos IK"
@@ -23,24 +26,27 @@
                 FontSize="32"
                 HorizontalOptions="Center" />
 
-            <Label
-                Text="Logga in via ditt Microsoft konto"
-                SemanticProperties.HeadingLevel="Level2"
-                SemanticProperties.Description="Welcome to dot net Multi platform App U I"
+            <Label 
+                Text="{Binding LoginStatus}"
                 FontSize="18"
+                HorizontalOptions="Center" />
+
+            <Button 
+                IsVisible="{Binding IsLoggedIn, Converter={StaticResource InvertedBoolConverter}}"
+                Command="{Binding LoginCommand}"
+                Text="Logga in"
+                HorizontalOptions="Center" />
+            <Button 
+                IsVisible="{Binding IsLoggedIn}"
+                Command="{Binding LogoutCommand}"
+                Text="Logga ut"
                 HorizontalOptions="Center" />
 
             <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
                 <CheckBox x:Name="useEmbedded" VerticalOptions="Center"/>
                 <Label Text="Use Embedded" VerticalOptions="Center"/>
             </StackLayout>
-
-            <Button 
-                Command="{Binding LoginAndGoToEventsCommand}"
-                Text="Logga in"
-                SemanticProperties.Hint="Sign In"
-                HorizontalOptions="Center" />
-
+            
         </VerticalStackLayout>
     </ScrollView>
 

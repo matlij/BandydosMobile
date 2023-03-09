@@ -47,13 +47,19 @@ namespace BandydosMobile.MSALClient
         /// <returns>Authentication result</returns>
         internal async Task<AuthenticationResult> AcquireTokenSilentAsync(string[] scopes)
         {
-            var accts = await PCA.GetAccountsAsync().ConfigureAwait(false);
-            var acct = accts.FirstOrDefault();
+            IAccount? acct = await GetAccountAsync().ConfigureAwait(false);
 
             var authResult = await PCA.AcquireTokenSilent(scopes, acct)
                                         .ExecuteAsync().ConfigureAwait(false);
             return authResult;
 
+        }
+
+        internal async Task<IAccount?> GetAccountAsync()
+        {
+            var accts = await PCA.GetAccountsAsync().ConfigureAwait(false);
+            var acct = accts.FirstOrDefault();
+            return acct;
         }
 
         /// <summary>

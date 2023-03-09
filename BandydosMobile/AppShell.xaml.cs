@@ -1,6 +1,4 @@
-﻿using BandydosMobile.Repository;
-
-namespace BandydosMobile;
+﻿namespace BandydosMobile;
 
 public partial class AppShell : Shell
 {
@@ -10,5 +8,6 @@ public partial class AppShell : Shell
 
         Routing.RegisterRoute(nameof(EventsPage), typeof(EventsPage));
         Routing.RegisterRoute(nameof(EventDetailPage), typeof(EventDetailPage));
+        Routing.RegisterRoute(nameof(MainPage), typeof(MainPage));
     }
 }

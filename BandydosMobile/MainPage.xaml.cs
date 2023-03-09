@@ -1,9 +1,4 @@
-﻿using BandydosMobile.MSALClient;
-using BandydosMobile.ViewModels;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using Microsoft.Identity.Client;
-using System.Windows.Input;
+﻿using BandydosMobile.ViewModels;
 
 namespace BandydosMobile;
 
@@ -18,9 +13,9 @@ public partial class MainPage : ContentPage
         BindingContext = _viewModel = viewModel;
     }
 
-    protected async override void OnAppearing()
+    protected override async void OnAppearing()
     {
-        await _viewModel.LoginAndGoToEventsAsync();
+        await _viewModel.Init();
     }
 }
 

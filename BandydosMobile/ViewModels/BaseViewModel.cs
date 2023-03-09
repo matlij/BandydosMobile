@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using CommunityToolkit.Mvvm.ComponentModel;
-using BandydosMobile.Models;
-using BandydosMobile.Services;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace BandydosMobile.ViewModels;
 

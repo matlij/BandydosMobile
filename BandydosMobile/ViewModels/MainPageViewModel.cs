@@ -4,9 +4,14 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace BandydosMobile.ViewModels;
 
-public partial class MainPageViewModel : ObservableObject
+public partial class MainPageViewModel : BaseViewModel
 {
-
+    [ObservableProperty]
+    private string _userName;
+    [ObservableProperty]
+    private string _loginStatus;
+    [ObservableProperty]
+    private bool _isLoggedIn;
     public MainPageViewModel(Authenticator authenticator)
     {
         Authenticator = authenticator;
@@ -14,17 +19,48 @@ public partial class MainPageViewModel : ObservableObject
 
     private Authenticator Authenticator { get; }
 
+    public async Task Init()
+    {
+        var userName = await Authenticator.GetLoggedInUserNameAsync();
+        if (userName != null)
+        {
+            LoginStatus = $"Du är inloggad som:{Environment.NewLine}{userName}";
+            IsLoggedIn = true;
+        }
+        else
+        {
+            LoginStatus = $"Du är inte inloggad";
+            IsLoggedIn = false;
+        }
+    }
+
     [RelayCommand]
-    public async Task LoginAndGoToEventsAsync()
+    public async Task LoginAsync()
     {
         try
         {
             var result = await Authenticator.SingInASync();
-            await Shell.Current.GoToAsync(nameof(EventsPage));
+            await Init();
+            //await Shell.Current.GoToAsync("..");
         }
         catch (Exception e)
         {
-            await Application.Current.MainPage.DisplayAlert("Inloggning misslyckades", e.Message, "Stäng");
+            await Application.Current.MainPage.DisplayAlert("Nånting blev fel", e.Message, "Stäng");
+        }
+    }
+
+    [RelayCommand]
+    public async Task LogoutAsync()
+    {
+        try
+        {
+            await Authenticator.SignOutAsync();
+            await Init();
+            //await Shell.Current.GoToAsync("..");
+        }
+        catch (Exception e)
+        {
+            await Application.Current.MainPage.DisplayAlert("Nånting blev fel", e.Message, "Stäng");
         }
     }
 }
