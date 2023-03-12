@@ -2,6 +2,7 @@
 using BandydosMobile.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Identity.Client;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 
@@ -26,8 +27,7 @@ namespace BandydosMobile.ViewModels
         private readonly IEventDataStore _eventDataStore;
         private readonly IDataStore<EventUser> _eventUserDataStore;
         private readonly Authenticator _authenticator;
-        private string? _userId;
-        private string? _userName;
+        private User? _user;
 
         public EventDetailViewModel(IEventDataStore dataStore, IDataStore<EventUser> eventUserDataStore, Authenticator authenticator)
         {
@@ -66,33 +66,32 @@ namespace BandydosMobile.ViewModels
         [RelayCommand]
         public async void AttendTapped(object obj)
         {
-
             try
             {
                 IsBusy = true;
 
-                var eventUser = _event.Users.FirstOrDefault(u => u.UserId == _userId);
-                if (eventUser == null)
+                if (_user == null)
                 {
-                    var newEventUser = new EventUser(_userId)
-                    {
-                        UserName = _userName,
-                        UserReply = EventReply.Attending
-                    };
-                    _event.Users.Add(newEventUser);
+                    await Shell.Current.GoToAsync(nameof(LoginPage));
+                    return;
                 }
-                else
-                {
-                    eventUser.UserName = _userName;
-                    eventUser.UserReply = eventUser.IsAttending
-                        ? EventReply.NotAttending
-                        : EventReply.Attending;
-                }
+
+                var eventUser = AddUserToEvent(_user, _event);
+
+                // Update user name if not set from before
+                eventUser.UserName = string.IsNullOrEmpty(_user.FriendlyName)
+                    ? _user.Name
+                    : _user.FriendlyName;
+
+                // Switch user reply to the opposite of the current reply
+                eventUser.UserReply = eventUser.IsAttending
+                    ? EventReply.NotAttending
+                    : EventReply.Attending;
 
                 var success = await _eventUserDataStore.UpdateAsync(_event.Id.ToString(), eventUser);
                 if (success)
                 {
-                    UpdateProperties(_event);
+                    UpdateObservableProperties(_event, _user.Id);
                 }
                 else
                 {
@@ -101,7 +100,7 @@ namespace BandydosMobile.ViewModels
             }
             catch (Exception e)
             {
-                Debug.WriteLine("Failed to update event. " + e.Message);
+                await DisplayError("Misslyckades att uppdatera event med ID: " + _itemId, exception: e);
             }
             finally
             {
@@ -109,36 +108,64 @@ namespace BandydosMobile.ViewModels
             }
         }
 
+        private static EventUser AddUserToEvent(User user, Event @event)
+        {
+            var eventUser = @event.Users.FirstOrDefault(u => u.UserId == user.Id);
+            if (eventUser == null)
+            {
+                eventUser = new EventUser(user)
+                {
+                    UserReply = EventReply.Attending
+                };
+                @event.Users.Add(eventUser);
+            }
+
+            return eventUser;
+        }
+
         public async Task LoadItem()
         {
             try
             {
-                var user = await _authenticator.SingInASync();
-                _userName = user.ClaimsPrincipal.FindFirst("name")?.Value ?? user.Account.Username;
-                _userId = user.UniqueId;
+                _user = await _authenticator.GetLoggedInUserAsync();
+                if (_user == null)
+                {
+                    await Shell.Current.GoToAsync(nameof(LoginPage));
+                    return;
+                }
 
                 var @event = await _eventDataStore.GetAsync(_itemId);
-                Title = @event?.EventType?.ToString();
+                if (@event is null)
+                {
+                    await DisplayError("Hämta användare eller event misslyckades", "Bandydos API returned null for event with ID: " + _itemId);
+                    return;
+                }
+
                 ItemId = @event.Id.ToString();
                 Title = @event.EventType?.ToString() ?? "Event";
-                UpdateProperties(@event);
+                UpdateObservableProperties(@event, _user.Id);
             }
             catch (Exception e)
             {
-                var page = Application.Current?.MainPage;
-                if (page != null)
-                {
-                    await page.DisplayAlert("Hämta användare eller event misslyckades", e.Message, "Stäng");
-                }
+                await DisplayError("Hämta användare eller event misslyckades", exception: e);
             }
         }
 
-        private void UpdateProperties(Event @event)
+        private static async Task DisplayError(string title, string? message = null, Exception? exception = null)
+        {
+            var page = Application.Current?.MainPage;
+            if (page != null)
+            {
+                await page.DisplayAlert(title, message ?? exception?.Message, "Stäng");
+            }
+        }
+
+        private void UpdateObservableProperties(Event @event, string userId)
         {
             Event = @event;
             UpdateEventUserCollection(@event);
 
-            var user = @event.Users.FirstOrDefault(u => u.UserId == _userId);
+            var user = @event.Users.FirstOrDefault(u => u.UserId == userId);
             IsAttending = user?.IsAttending ?? false;
             AttendBtnText = IsAttending
                 ? "Av"

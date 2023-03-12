@@ -21,10 +21,10 @@ public partial class LoginPageViewModel : BaseViewModel
 
     public async Task Init()
     {
-        var userName = await Authenticator.GetLoggedInUserNameAsync();
-        if (userName != null)
+        var user = await Authenticator.GetLoggedInUserAsync();
+        if (user != null)
         {
-            LoginStatus = $"Du är inloggad som:{Environment.NewLine}{userName}";
+            LoginStatus = $"Du är inloggad som:{Environment.NewLine}{user.GetName()}";
             IsLoggedIn = true;
         }
         else

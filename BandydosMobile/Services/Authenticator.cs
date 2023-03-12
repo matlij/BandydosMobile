@@ -1,40 +1,63 @@
-﻿using BandydosMobile.MSALClient;
+﻿using BandydosMobile.Models;
+using BandydosMobile.MSALClient;
 using Microsoft.Identity.Client;
+using System.Diagnostics;
 
 namespace BandydosMobile.Services;
 
 public class Authenticator
 {
-    public async Task<string?> GetLoggedInUserNameAsync()
+    public async Task<User?> GetLoggedInUserAsync()
     {
         try
         {
-            var result = await PCAWrapper.Instance.GetAccountAsync();
-            return result?.Username;
+            var result = await PCAWrapper.Instance.AcquireTokenSilentAsync(AppConstants.Scopes);
+            return ConvertToUser(result);
         }
         catch (Exception e)
         {
-            return "Nått gick fel! " + e.Message;
+            Debug.WriteLine("Misslyckades att hämta användare: " + e.Message);
+            return null;
         }
     }
 
-    public async Task<AuthenticationResult> SingInASync(bool useEmbedded = false)
+    public async Task<User?> SingInASync(bool useEmbedded = false)
     {
+        AuthenticationResult result;
         try
         {
             PCAWrapper.Instance.UseEmbedded = useEmbedded;
             // First attempt silent login, which checks the cache for an existing valid token.
             // If this is very first time or user has signed out, it will throw MsalUiRequiredException
-            var result = await PCAWrapper.Instance.AcquireTokenSilentAsync(AppConstants.Scopes);
-
-            return result;
+            result = await PCAWrapper.Instance.AcquireTokenSilentAsync(AppConstants.Scopes);
         }
         catch (MsalUiRequiredException)
         {
             // This executes UI interaction to obtain token
-            var result = await PCAWrapper.Instance.AcquireTokenInteractiveAsync(AppConstants.Scopes);
-            return result;
+            result = await PCAWrapper.Instance.AcquireTokenInteractiveAsync(AppConstants.Scopes);
         }
+
+        if (result is null)
+        {
+            throw new InvalidOperationException("Failed to Sing in user");
+        }
+
+        return ConvertToUser(result);
+    }
+
+    private static User? ConvertToUser(AuthenticationResult? result)
+    {
+        if (result is null)
+        {
+            return null;
+        }
+
+        return new User()
+        {
+            Id = result.Account.HomeAccountId.Identifier,
+            Name = result.Account.Username,
+            FriendlyName = result.ClaimsPrincipal.FindFirst("name")?.Value ?? result.Account.Username,
+        };
     }
 
     public Task SignOutAsync()

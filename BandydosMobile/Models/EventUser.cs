@@ -9,8 +9,21 @@ namespace BandydosMobile.Models
             UserId = userId;
         }
 
+        public EventUser(User user)
+        {
+            if (user is null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            UserId = user.Id;
+            UserName = string.IsNullOrEmpty(user.FriendlyName)
+                ? user.Name
+                : user.FriendlyName;
+        }
+
         public string UserId { get; }
-        public string UserName { get; set; }
+        public string UserName { get; set; } = string.Empty;
 
         public bool IsAttending => UserReply == EventReply.Attending;
 
