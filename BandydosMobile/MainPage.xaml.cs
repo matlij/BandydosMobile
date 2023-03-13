@@ -2,11 +2,11 @@ using BandydosMobile.ViewModels;
 
 namespace BandydosMobile;
 
-public partial class EventsPage : ContentPage
+public partial class MainPage : ContentPage
 {
     private readonly EventsViewModel _viewModel;
 
-    public EventsPage(EventsViewModel viewModel)
+    public MainPage(EventsViewModel viewModel)
 	{
 		InitializeComponent();
 

@@ -40,8 +40,7 @@ public partial class LoginPageViewModel : BaseViewModel
         try
         {
             var result = await Authenticator.SingInASync();
-            await Init();
-            //await Shell.Current.GoToAsync("..");
+            await Shell.Current.GoToAsync("..");
         }
         catch (Exception e)
         {
@@ -55,8 +54,7 @@ public partial class LoginPageViewModel : BaseViewModel
         try
         {
             await Authenticator.SignOutAsync();
-            await Init();
-            //await Shell.Current.GoToAsync("..");
+            await Shell.Current.GoToAsync("..");
         }
         catch (Exception e)
         {

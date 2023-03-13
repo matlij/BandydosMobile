@@ -4,7 +4,7 @@
              xmlns:viewmodel="clr-namespace:BandydosMobile.ViewModels"
              xmlns:models="clr-namespace:BandydosMobile.Models"
              x:DataType="viewmodel:EventsViewModel"
-             x:Class="BandydosMobile.EventsPage"
+             x:Class="BandydosMobile.MainPage"
              Title="Event">
     <Shell.TitleView>
         <StackLayout>
