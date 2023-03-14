@@ -18,12 +18,14 @@ public partial class EventsViewModel : BaseViewModel
     private ObservableCollection<Event> items;
 
     private readonly IEventDataStore _dataStore;
+    private readonly Authenticator _authenticator;
 
-    public EventsViewModel(IEventDataStore dataStore)
+    public EventsViewModel(IEventDataStore dataStore, Authenticator authenticator)
     {
         Title = "Aktiviteter";
-        Items = new ObservableCollection<Event>();
+        Items = new();
         _dataStore = dataStore;
+        _authenticator = authenticator;
     }
 
     [RelayCommand]
@@ -33,11 +35,18 @@ public partial class EventsViewModel : BaseViewModel
 
         try
         {
+            var user = await _authenticator.GetLoggedInUserAsync();
+            if (user == null)
+            {
+                await Shell.Current.GoToAsync(nameof(LoginPage));
+                return;
+            }
+
             Items.Clear();
             var items = await _dataStore.GetAsync(DateTime.Now);
             foreach (var @event in items.OrderBy(i => i.Date))
             {
-                //@event.CurrentUserIsAttending = UserIsAttendingEvent(@event, Guid.NewGuid()); //TODO
+                @event.LoggedInUser = @event.Users.FirstOrDefault(u => u.UserId == user.Id);
                 Items.Add(@event);
             }
         }
@@ -61,13 +70,6 @@ public partial class EventsViewModel : BaseViewModel
     async Task GoToUserProfile()
     {
         await Shell.Current.GoToAsync(nameof(LoginPage));
-    }
-
-    private static bool UserIsAttendingEvent(Event @event, string userId)
-    {
-        var user = @event.Users.FirstOrDefault(u => u.UserId == userId);
-
-        return user != null && user.IsAttending;
     }
 
     private static async Task DisplayAlert(string title, string message)

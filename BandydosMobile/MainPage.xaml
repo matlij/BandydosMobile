@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converters="clr-namespace:BandydosMobile.Converters"
              xmlns:viewmodel="clr-namespace:BandydosMobile.ViewModels"
              xmlns:models="clr-namespace:BandydosMobile.Models"
              x:DataType="viewmodel:EventsViewModel"
@@ -11,6 +12,9 @@
             <Button Text="PROFIL" Command="{Binding GoToUserProfileCommand}" HeightRequest="50" WidthRequest="100" HorizontalOptions="End"></Button>
         </StackLayout>
     </Shell.TitleView>
+    <ContentPage.Resources>
+        <converters:BoolToRedGreenConverter x:Key="boolToColor" />
+    </ContentPage.Resources>
     <StackLayout>
         <RefreshView IsRefreshing="{Binding IsRefreshing}"
                      Command="{Binding LoadItemsCommand}">
@@ -21,12 +25,28 @@
                         <Frame>
                             <Frame.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:EventsViewModel}}, Path=ItemTappedCommand}"
-                                                  CommandParameter="{Binding .}"/>
+                                                      CommandParameter="{Binding .}"/>
                             </Frame.GestureRecognizers>
                             <StackLayout>
-                                <Label Text="{Binding EventType}" FontSize="16" FontAttributes="Bold"/>
-                                <Label Grid.Row="1" Text="{Binding DateString}"/>
-                                <Label Grid.Row="2" Text="{Binding UsersAttending}"/>
+                                <Grid RowSpacing="5" ColumnSpacing="10" VerticalOptions="Start">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.ColumnSpan="2" Text="{Binding EventType}" FontSize="16" FontAttributes="Bold"/>
+                                    <Label Grid.Row="1" Text="Datum:" />
+                                    <Label Grid.Row="1" Grid.Column="1" Text="{Binding DateString}" FontAttributes="Bold"/>
+                                    <Label Grid.Row="2" Text="Kommer:" />
+                                    <Label Grid.Row="2" Grid.Column="1" Text="{Binding UsersAttending}" FontAttributes="Bold"/>
+                                    <Label Grid.Row="3" Text="Ditt svar:" />
+                                    <Label Grid.Row="3" Grid.Column="1" Text="{Binding LoggedInUser.UserReplyString}" FontAttributes="Bold" TextColor="{Binding LoggedInUser.IsAttending, Converter={StaticResource boolToColor}}"/>
+                                </Grid>
                             </StackLayout>
                         </Frame>
                     </DataTemplate>

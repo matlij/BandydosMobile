@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converters="clr-namespace:BandydosMobile.Converters"
              xmlns:viewmodel="clr-namespace:BandydosMobile.ViewModels"
              xmlns:models="clr-namespace:BandydosMobile.Models"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:DataType="viewmodel:EventDetailViewModel"
              x:Class="BandydosMobile.EventDetailPage"
              Title="{Binding Title}">
-    <!--<ContentPage.Resources>
-        <ResourceDictionary>
-            <toolkit:BoolToObjectConverter x:Key="BoolToObjectConverter" TrueObject="DarkRed" FalseObject="Green" />
-        </ResourceDictionary>
-    </ContentPage.Resources>-->    
+    <ContentPage.Resources>
+        <converters:BoolToRedGreenConverter x:Key="boolToColor" />
+    </ContentPage.Resources>
     <StackLayout Padding="30" Spacing="20">
         <Grid ColumnSpacing="15" VerticalOptions="Start">
             <Grid.RowDefinitions>
@@ -37,12 +36,14 @@
         </Grid>
 
         <StackLayout Spacing="10" VerticalOptions="CenterAndExpand">
-            <Label Text="Närvaro:" FontAttributes="Bold"/>
+            <Label Text="{Binding Event.UsersAttending, StringFormat='Närvaro: {0}'}" FontAttributes="Bold" />
             <ListView ItemsSource="{Binding Users}">
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="models:EventUser">
                         <TextCell Text="{Binding UserName}"
-                                  Detail="{Binding UserReplyString}"/>
+                                  Detail="{Binding UserReplyString}"
+                                  TextColor="Black"
+                                  DetailColor="{Binding IsAttending, Converter={StaticResource boolToColor}}"/>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

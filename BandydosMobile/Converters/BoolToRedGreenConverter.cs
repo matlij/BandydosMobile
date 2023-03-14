@@ -1,14 +1,14 @@
 ﻿using System.Globalization;
 
-namespace SportPlanner.Converters
+namespace BandydosMobile.Converters
 {
-    public class BoolToRedOrGreenConverter : IValueConverter
+    public class BoolToRedGreenConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             return (bool)value
-                ? Colors.Red
-                : Colors.Green;
+                ? Colors.Green
+                : Colors.DarkRed;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

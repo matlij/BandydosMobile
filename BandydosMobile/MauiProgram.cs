@@ -28,11 +28,11 @@ public static class MauiProgram
         builder.Services.AddTransient<IDataStore<EventUser>, EventUserDataStore>();
         builder.Services.AddTransient<IGenericRepository, GenericRepository>();
 
-        builder.Services.AddSingleton<LoginPageViewModel>();
+        builder.Services.AddTransient<LoginPageViewModel>();
         builder.Services.AddTransient<EventsViewModel>();
         builder.Services.AddTransient<EventDetailViewModel>();
 
-        builder.Services.AddSingleton<LoginPage>();
+        builder.Services.AddTransient<LoginPage>();
         builder.Services.AddTransient<MainPage>();
         builder.Services.AddTransient<EventDetailPage>();
 

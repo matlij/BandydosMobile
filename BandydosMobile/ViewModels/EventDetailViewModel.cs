@@ -76,7 +76,7 @@ namespace BandydosMobile.ViewModels
                     return;
                 }
 
-                var eventUser = AddUserToEvent(_user, _event);
+                var eventUser = AddToEventIfNotExists(_user, _event);
 
                 // Update user name if not set from before
                 eventUser.UserName = string.IsNullOrEmpty(_user.FriendlyName)
@@ -108,7 +108,7 @@ namespace BandydosMobile.ViewModels
             }
         }
 
-        private static EventUser AddUserToEvent(User user, Event @event)
+        private static EventUser AddToEventIfNotExists(User user, Event @event)
         {
             var eventUser = @event.Users.FirstOrDefault(u => u.UserId == user.Id);
             if (eventUser == null)
@@ -162,6 +162,7 @@ namespace BandydosMobile.ViewModels
 
         private void UpdateObservableProperties(Event @event, string userId)
         {
+            Event = new(); // Needed since ObservableProperties only get's updated if object is changed
             Event = @event;
             UpdateEventUserCollection(@event);
 

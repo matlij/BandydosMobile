@@ -13,9 +13,10 @@ namespace BandydosMobile.Models
         public string DaysLeft { get => $"Dagar kvar: {(Date - DateTime.Now).Days}"; }
         public EventType? EventType { get; set; }
         public Address? Address { get; set; }
-        public ObservableCollection<EventUser> Users { get; set; } = new ObservableCollection<EventUser>();
-        public bool CurrentUserIsAttending { get; set; }
-        public string UsersAttending { get => $"Närvaro: {Users.Count(u => u.IsAttending)} / {Users.Count}"; }
+        public ObservableCollection<EventUser> Users { get; set; } = new();
+        public string UsersAttending { get => $"{Users.Count(u => u.IsAttending)} / {Users.Count}"; }
+
+        public EventUser? LoggedInUser { get; set; }
     }
 
     public class Address
