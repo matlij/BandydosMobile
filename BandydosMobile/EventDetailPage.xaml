@@ -23,20 +23,22 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <Label Grid.Row="0" Text="Tid:" FontAttributes="Bold" />
-            <Label Grid.Row="0" Grid.Column="1" Text="{Binding Event.Time}" />
-            <Label Grid.Row="1" Text="Datum:" FontAttributes="Bold" />
-            <Label Grid.Row="1" Grid.Column="1" Text="{Binding Event.DateString}"/>
-            <Label Grid.Row="2" Text="Plats:" FontAttributes="Bold" />
-            <Label Grid.Row="2" Grid.Column="1" Text="{Binding Event.Address.FullAddress}" FontSize="16" TextColor="Blue" TextDecorations="Underline">
+            <Label Grid.Row="0" Text="Tid:" />
+            <Label Grid.Row="0" Grid.Column="1" Text="{Binding Event.Time}" FontAttributes="Bold"/>
+            <Label Grid.Row="1" Text="Datum:" />
+            <Label Grid.Row="1" Grid.Column="1" Text="{Binding Event.DateString}" FontAttributes="Bold"/>
+            <Label Grid.Row="2" Text="Plats:" />
+            <Label Grid.Row="2" Grid.Column="1" Text="{Binding Event.Address.FullAddress}" FontSize="16" TextColor="Blue" TextDecorations="Underline" FontAttributes="Bold">
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding AddressTappedCommand}" />
                 </Label.GestureRecognizers>
             </Label>
+            <Label Grid.Row="3" Text="Kommer:"/>
+            <Label Grid.Row="3" Grid.Column="1" Text="{Binding Event.UsersAttending}" FontAttributes="Bold"/>
         </Grid>
 
         <StackLayout Spacing="10" VerticalOptions="CenterAndExpand">
-            <Label Text="{Binding Event.UsersAttending, StringFormat='Spelarlista: {0}'}" FontAttributes="Bold" />
+            <Label Text="Spelarlista:" />
             <ListView ItemsSource="{Binding Users}">
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="models:EventUser">
