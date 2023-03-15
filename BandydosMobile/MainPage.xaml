@@ -6,12 +6,10 @@
              xmlns:models="clr-namespace:BandydosMobile.Models"
              x:DataType="viewmodel:EventsViewModel"
              x:Class="BandydosMobile.MainPage"
-             Title="Event">
-    <Shell.TitleView>
-        <StackLayout>
-            <Button Text="PROFIL" Command="{Binding GoToUserProfileCommand}" HeightRequest="50" WidthRequest="100" HorizontalOptions="End"></Button>
-        </StackLayout>
-    </Shell.TitleView>
+             Title="{Binding Title}">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="MIN SIDA" Clicked="MyPage_Clicked" />
+    </ContentPage.ToolbarItems>
     <ContentPage.Resources>
         <converters:BoolToRedGreenConverter x:Key="boolToColor" />
     </ContentPage.Resources>

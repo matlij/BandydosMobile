@@ -17,4 +17,10 @@ public partial class MainPage : ContentPage
     {
         await _viewModel.LoadItems();
     }
+
+    private async void MyPage_Clicked(object sender, EventArgs e)
+    {
+        await _viewModel.GoToUserProfile();
+
+    }
 }

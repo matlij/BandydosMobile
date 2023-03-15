@@ -12,7 +12,7 @@
         <converters:BoolToRedGreenConverter x:Key="boolToColor" />
     </ContentPage.Resources>
     <StackLayout Padding="30" Spacing="20">
-        <Grid ColumnSpacing="15" VerticalOptions="Start">
+        <Grid RowSpacing="5" ColumnSpacing="10" VerticalOptions="Start">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -36,7 +36,7 @@
         </Grid>
 
         <StackLayout Spacing="10" VerticalOptions="CenterAndExpand">
-            <Label Text="{Binding Event.UsersAttending, StringFormat='Närvaro: {0}'}" FontAttributes="Bold" />
+            <Label Text="{Binding Event.UsersAttending, StringFormat='Spelarlista: {0}'}" FontAttributes="Bold" />
             <ListView ItemsSource="{Binding Users}">
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="models:EventUser">
