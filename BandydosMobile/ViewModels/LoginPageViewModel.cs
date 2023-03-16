@@ -15,6 +15,7 @@ public partial class LoginPageViewModel : BaseViewModel
     public LoginPageViewModel(Authenticator authenticator)
     {
         Authenticator = authenticator;
+        Title = "Min sida";
     }
 
     private Authenticator Authenticator { get; }
@@ -25,6 +26,7 @@ public partial class LoginPageViewModel : BaseViewModel
         if (user != null)
         {
             LoginStatus = $"Du är inloggad som:{Environment.NewLine}{user.GetName()}";
+            UserName = user.GetName();
             IsLoggedIn = true;
         }
         else

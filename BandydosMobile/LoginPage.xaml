@@ -4,7 +4,8 @@
              xmlns:viewmodel="clr-namespace:BandydosMobile.ViewModels"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="BandydosMobile.LoginPage"
-             x:DataType="viewmodel:LoginPageViewModel">
+             x:DataType="viewmodel:LoginPageViewModel"
+             Title="{Binding Title}">
 
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -12,42 +13,48 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <ScrollView>
-        <VerticalStackLayout
-            Spacing="35"
+    <VerticalStackLayout
+            Spacing="50"
             Padding="30,0"
             VerticalOptions="Center">
 
-            <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
+        <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
 
+        <StackLayout>
             <Label
-                Text="Bandydos IK"
-                SemanticProperties.HeadingLevel="Level1"
+                    Text="Inloggad som:"
+                    HorizontalOptions="Center" 
+                    IsVisible="{Binding IsLoggedIn}"/>
+            <Label
+                    Text="{Binding UserName}"
+                    FontSize="32"
+                    HorizontalOptions="Center" 
+                    IsVisible="{Binding IsLoggedIn}"/>
+        </StackLayout>
+        <Label
+                Text="Du är inte inloggad"
                 FontSize="32"
-                HorizontalOptions="Center" />
+                HorizontalOptions="Center" 
+                IsVisible="{Binding IsLoggedIn, Converter={StaticResource InvertedBoolConverter}}"/>
 
-            <Label 
-                Text="{Binding LoginStatus}"
-                FontSize="18"
-                HorizontalOptions="Center" />
-
-            <Button 
-                IsVisible="{Binding IsLoggedIn, Converter={StaticResource InvertedBoolConverter}}"
-                Command="{Binding LoginCommand}"
-                Text="Logga in"
-                HorizontalOptions="Center" />
-            <Button 
-                IsVisible="{Binding IsLoggedIn}"
-                Command="{Binding LogoutCommand}"
-                Text="Logga ut"
-                HorizontalOptions="Center" />
-
-            <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+        <StackLayout Spacing="10">
+            <HorizontalStackLayout HorizontalOptions="Center">
                 <CheckBox x:Name="useEmbedded" VerticalOptions="Center"/>
-                <Label Text="Use Embedded" VerticalOptions="Center"/>
-            </StackLayout>
-            
-        </VerticalStackLayout>
-    </ScrollView>
+                <Label Text="Använd default browsern" VerticalOptions="Center"/>
+            </HorizontalStackLayout>
+            <Button 
+                    IsVisible="{Binding IsLoggedIn, Converter={StaticResource InvertedBoolConverter}}"
+                    Command="{Binding LoginCommand}"
+                    Text="Logga in"
+                    HorizontalOptions="Center" />
+            <Button 
+                    IsVisible="{Binding IsLoggedIn}"
+                    Command="{Binding LogoutCommand}"
+                    Text="Logga ut"
+                    HorizontalOptions="Center" />
+
+        </StackLayout>
+
+    </VerticalStackLayout>
 
 </ContentPage>
