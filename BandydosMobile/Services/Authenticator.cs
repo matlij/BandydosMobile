@@ -11,7 +11,7 @@ public class Authenticator
     {
         try
         {
-            var result = await PCAWrapper.Instance.AcquireTokenSilentAsync(AppConstants.Scopes);
+            var result = await PCAWrapperB2C.Instance.AcquireTokenSilentAsync(B2CConstants.Scopes);
             return ConvertToUser(result);
         }
         catch (Exception e)
@@ -26,15 +26,15 @@ public class Authenticator
         AuthenticationResult result;
         try
         {
-            PCAWrapper.Instance.UseEmbedded = useEmbedded;
+            //PCAWrapperB2C.Instance.UseEmbedded = useEmbedded;
             // First attempt silent login, which checks the cache for an existing valid token.
             // If this is very first time or user has signed out, it will throw MsalUiRequiredException
-            result = await PCAWrapper.Instance.AcquireTokenSilentAsync(AppConstants.Scopes);
+            result = await PCAWrapperB2C.Instance.AcquireTokenSilentAsync(B2CConstants.Scopes);
         }
         catch (MsalUiRequiredException)
         {
             // This executes UI interaction to obtain token
-            result = await PCAWrapper.Instance.AcquireTokenInteractiveAsync(AppConstants.Scopes);
+            result = await PCAWrapperB2C.Instance.AcquireTokenInteractiveAsync(B2CConstants.Scopes);
         }
 
         if (result is null)
@@ -62,7 +62,7 @@ public class Authenticator
 
     public Task SignOutAsync()
     {
-        return PCAWrapper.Instance.SignOutAsync();
+        return PCAWrapperB2C.Instance.SignOutAsync();
     }
 
     // Call the web api. The code is left in the Ux file for easy to see.

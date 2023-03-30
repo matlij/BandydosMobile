@@ -9,34 +9,30 @@ namespace BandydosMobile.MSALClient
 {
     /// <summary>
     /// This is a wrapper for PublicClientApplication. It is singleton.
-    /// </summary>
-    public class PCAWrapper
+    /// </summary>    
+    public class PCAWrapperB2C
     {
         /// <summary>
-        /// This is the singleton used by Ux. Since PCAWrapper constructor does not have perf or memory issue, it is instantiated directly.
+        /// This is the singleton used by ux. Since PCAWrapper constructor does not have perf or memory issue, it is instantiated directly.
         /// </summary>
-        public static PCAWrapper Instance { get; private set; } = new PCAWrapper();
+        public static PCAWrapperB2C Instance { get; private set; } = new PCAWrapperB2C();
 
         /// <summary>
         /// Instance of PublicClientApplication. It is provided, if App wants more customization.
         /// </summary>
         internal IPublicClientApplication PCA { get; }
 
-        /// <summary>
-        /// This will determine if the Interactive Authentication should be Embedded or System view
-        /// </summary>
-        internal bool UseEmbedded { get; set; } = false;
-
         // private constructor for singleton
-        private PCAWrapper()
+        private PCAWrapperB2C()
         {
             // Create PCA once. Make sure that all the config parameters below are passed
             PCA = PublicClientApplicationBuilder
-                                        .Create(AppConstants.ClientId)
+                                        .Create(B2CConstants.ClientID)
                                         .WithExperimentalFeatures() // this is for upcoming logger
                                         .WithLogging(_logger)
-                                        .WithRedirectUri(PlatformConfig.Instance.RedirectUri)
-                                        .WithIosKeychainSecurityGroup("com.microsoft.adalcache")
+                                        .WithB2CAuthority(B2CConstants.AuthoritySignInSignUp)
+                                        .WithIosKeychainSecurityGroup(B2CConstants.IOSKeyChainGroup)
+                                        .WithRedirectUri(B2CConstants.RedirectUri)
                                         .Build();
         }
 
@@ -45,21 +41,17 @@ namespace BandydosMobile.MSALClient
         /// </summary>
         /// <param name="scopes">desired scopes</param>
         /// <returns>Authentication result</returns>
-        internal async Task<AuthenticationResult> AcquireTokenSilentAsync(string[] scopes)
+        public async Task<AuthenticationResult> AcquireTokenSilentAsync(string[] scopes)
         {
-            IAccount? acct = await GetAccountAsync().ConfigureAwait(false);
+            // Get accounts by policy
+            IEnumerable<IAccount> accounts = await PCA.GetAccountsAsync(B2CConstants.PolicySignUpSignIn).ConfigureAwait(false);
 
-            var authResult = await PCA.AcquireTokenSilent(scopes, acct)
-                                        .ExecuteAsync().ConfigureAwait(false);
+            AuthenticationResult authResult = await PCA.AcquireTokenSilent(scopes, accounts.FirstOrDefault())
+               .WithB2CAuthority(B2CConstants.AuthoritySignInSignUp)
+               .ExecuteAsync()
+               .ConfigureAwait(false);
+
             return authResult;
-
-        }
-
-        internal async Task<IAccount?> GetAccountAsync()
-        {
-            var accts = await PCA.GetAccountsAsync().ConfigureAwait(false);
-            var acct = accts.FirstOrDefault();
-            return acct;
         }
 
         /// <summary>
@@ -69,27 +61,10 @@ namespace BandydosMobile.MSALClient
         /// <returns></returns>
         internal async Task<AuthenticationResult> AcquireTokenInteractiveAsync(string[] scopes)
         {
-            if (UseEmbedded)
-            {
-
-                return await PCA.AcquireTokenInteractive(scopes)
-                                        .WithUseEmbeddedWebView(true)
-                                        .WithParentActivityOrWindow(PlatformConfig.Instance.ParentWindow)
-                                        .ExecuteAsync()
-                                        .ConfigureAwait(false);
-            }
-
-            SystemWebViewOptions systemWebViewOptions = new SystemWebViewOptions();
-#if IOS
-            // Hide the privacy prompt in iOS
-            systemWebViewOptions.iOSHidePrivacyPrompt = true;
-#endif
-
-            return await PCA.AcquireTokenInteractive(scopes)
-                                    .WithSystemWebViewOptions(systemWebViewOptions)
-                                    .WithParentActivityOrWindow(PlatformConfig.Instance.ParentWindow)
-                                    .ExecuteAsync()
-                                    .ConfigureAwait(false);
+            return await PCA.AcquireTokenInteractive(B2CConstants.Scopes)
+                                                        .WithParentActivityOrWindow(PlatformConfig.Instance.ParentWindow)
+                                                        .ExecuteAsync()
+                                                        .ConfigureAwait(false);
         }
 
         /// <summary>
@@ -136,5 +111,6 @@ namespace BandydosMobile.MSALClient
                 Debug.WriteLine(entry.Message);
             }
         }
+
     }
 }
