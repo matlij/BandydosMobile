@@ -17,13 +17,13 @@ namespace BandydosMobile.Models
             }
 
             UserId = user.Id;
-            UserName = string.IsNullOrEmpty(user.FriendlyName)
+            Name = string.IsNullOrEmpty(user.FriendlyName)
                 ? user.Name
                 : user.FriendlyName;
         }
 
         public string UserId { get; }
-        public string UserName { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
 
         public bool IsAttending => UserReply == EventReply.Attending;
 

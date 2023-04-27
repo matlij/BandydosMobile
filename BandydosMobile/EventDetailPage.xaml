@@ -42,7 +42,7 @@
             <ListView ItemsSource="{Binding Users}">
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="models:EventUser">
-                        <TextCell Text="{Binding UserName}"
+                        <TextCell Text="{Binding Name}"
                                   Detail="{Binding UserReplyString}"
                                   TextColor="Black"
                                   DetailColor="{Binding IsAttending, Converter={StaticResource boolToColor}}"/>
