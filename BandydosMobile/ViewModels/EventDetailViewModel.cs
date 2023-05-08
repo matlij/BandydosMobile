@@ -12,17 +12,17 @@ namespace BandydosMobile.ViewModels
     public partial class EventDetailViewModel : BaseViewModel
     {
         [ObservableProperty]
-        private Event _event;
+        private Event _event = new();
         [ObservableProperty]
-        private string _attendBtnText;
+        private string _attendBtnText = string.Empty;
         [ObservableProperty]
-        private Color _attendBtnColor;
+        private Color? _attendBtnColor;
         [ObservableProperty]
         private bool _isAttending;
         [ObservableProperty]
-        private string _itemId;
+        private string _itemId = string.Empty;
         [ObservableProperty]
-        private ObservableCollection<EventUser> users;
+        private ObservableCollection<EventUser> users = new();
 
         private readonly IEventDataStore _eventDataStore;
         private readonly IDataStore<EventUser> _eventUserDataStore;
