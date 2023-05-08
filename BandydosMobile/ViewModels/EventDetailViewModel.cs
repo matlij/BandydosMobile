@@ -42,6 +42,11 @@ namespace BandydosMobile.ViewModels
         {
             try
             {
+                if (string.IsNullOrEmpty(Event.Address?.FullAddress))
+                {
+                    return;
+                }
+
                 var locations = await Geocoding.GetLocationsAsync(Event.Address.FullAddress);
                 var location = locations?.FirstOrDefault();
 
