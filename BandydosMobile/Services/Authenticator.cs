@@ -52,9 +52,16 @@ public class Authenticator
             return null;
         }
 
+        var profile = result.Account.GetTenantProfiles().FirstOrDefault();
+        var id = profile?.Oid;
+        if (string.IsNullOrEmpty(id))
+        {
+            throw new InvalidOperationException("Failed to find user ID for user + " + result.Account.Username);
+        }
+
         return new User()
         {
-            Id = result.Account.HomeAccountId.Identifier,
+            Id = id ,
             Name = result.Account.Username,
             FriendlyName = result.ClaimsPrincipal.FindFirst("name")?.Value ?? result.Account.Username,
         };

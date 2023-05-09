@@ -2,7 +2,6 @@
 using BandydosMobile.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.Identity.Client;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 
@@ -34,7 +33,6 @@ namespace BandydosMobile.ViewModels
             _eventDataStore = dataStore;
             _eventUserDataStore = eventUserDataStore;
             _authenticator = authenticator;
-            Users = new ObservableCollection<EventUser>();
         }
 
         [RelayCommand]
