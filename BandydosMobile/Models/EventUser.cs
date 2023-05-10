@@ -17,9 +17,7 @@ namespace BandydosMobile.Models
             }
 
             UserId = user.Id;
-            Name = string.IsNullOrEmpty(user.FriendlyName)
-                ? user.Name
-                : user.FriendlyName;
+            Name = user.Name;
         }
 
         public string UserId { get; }

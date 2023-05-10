@@ -25,8 +25,8 @@ public partial class LoginPageViewModel : BaseViewModel
         var user = await Authenticator.GetLoggedInUserAsync();
         if (user != null)
         {
-            LoginStatus = $"Du är inloggad som:{Environment.NewLine}{user.GetName()}";
-            UserName = user.GetName();
+            LoginStatus = $"Du är inloggad som:{Environment.NewLine}{user.Name}";
+            UserName = user.Name;
             IsLoggedIn = true;
         }
         else
@@ -63,5 +63,7 @@ public partial class LoginPageViewModel : BaseViewModel
             await Application.Current.MainPage.DisplayAlert("Nånting blev fel", e.Message, "Stäng");
         }
     }
+
+
 }
 

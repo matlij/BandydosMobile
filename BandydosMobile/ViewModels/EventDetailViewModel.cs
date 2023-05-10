@@ -82,9 +82,7 @@ namespace BandydosMobile.ViewModels
                 var eventUser = AddToEventIfNotExists(_user, _event);
 
                 // Update user name if not set from before
-                eventUser.Name = string.IsNullOrEmpty(_user.FriendlyName)
-                    ? _user.Name
-                    : _user.FriendlyName;
+                eventUser.Name = _user.Name;
 
                 // Switch user reply to the opposite of the current reply
                 eventUser.UserReply = eventUser.IsAttending

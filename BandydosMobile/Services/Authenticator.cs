@@ -62,8 +62,7 @@ public class Authenticator
         return new User()
         {
             Id = id ,
-            Name = result.Account.Username,
-            FriendlyName = result.ClaimsPrincipal.FindFirst("name")?.Value ?? result.Account.Username,
+            Name = result.Account.Username
         };
     }
 
