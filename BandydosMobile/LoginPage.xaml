@@ -13,48 +13,43 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <VerticalStackLayout
-            Spacing="50"
-            Padding="30,0"
-            VerticalOptions="Center">
-
+    <StackLayout Padding="30">
         <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
 
-        <StackLayout>
-            <Label
+        <StackLayout Spacing="15" VerticalOptions="CenterAndExpand">
+            <Label FontSize="16"
                     Text="Inloggad som:"
-                    HorizontalOptions="Center" 
                     IsVisible="{Binding IsLoggedIn}"/>
-            <Label
-                    Text="{Binding UserName}"
-                    FontSize="32"
-                    HorizontalOptions="Center" 
-                    IsVisible="{Binding IsLoggedIn}"/>
-        </StackLayout>
-        <Label
-                Text="Du är inte inloggad"
-                FontSize="32"
-                HorizontalOptions="Center" 
-                IsVisible="{Binding IsLoggedIn, Converter={StaticResource InvertedBoolConverter}}"/>
 
-        <StackLayout Spacing="10">
+            <Entry Text="{Binding UserName}"
+                   FontSize="32"
+                   IsVisible="{Binding IsLoggedIn}"/>
+            <Button IsVisible="{Binding IsLoggedIn}"
+                    Command="{Binding UpdateUserCommand}"
+                    Text="Uppdatera namn"/>
+            
+            <Label Text="Du är inte inloggad"
+                   HorizontalOptions="Center"
+                    FontSize="32"
+                    IsVisible="{Binding IsLoggedIn, Converter={StaticResource InvertedBoolConverter}}"/>
+        </StackLayout>
+
+        <StackLayout VerticalOptions="End" Spacing="15">
             <HorizontalStackLayout HorizontalOptions="Center">
                 <CheckBox x:Name="useEmbedded" VerticalOptions="Center"/>
-                <Label Text="Använd default browsern" VerticalOptions="Center"/>
+                <Label Text="Använd default browsern (kryssa i om det inte funkar att logga in)" VerticalOptions="Center"/>
             </HorizontalStackLayout>
             <Button 
                     IsVisible="{Binding IsLoggedIn, Converter={StaticResource InvertedBoolConverter}}"
                     Command="{Binding LoginCommand}"
-                    Text="Logga in"
-                    HorizontalOptions="Center" />
+                    Text="Logga in"/>
             <Button 
                     IsVisible="{Binding IsLoggedIn}"
                     Command="{Binding LogoutCommand}"
-                    Text="Logga ut"
-                    HorizontalOptions="Center" />
+                    Text="Logga ut"/>
 
         </StackLayout>
 
-    </VerticalStackLayout>
+    </StackLayout>
 
 </ContentPage>

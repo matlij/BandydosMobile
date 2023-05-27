@@ -62,7 +62,7 @@ public class Authenticator
         return new User()
         {
             Id = id ,
-            Name = result.Account.Username
+            Name = result.ClaimsPrincipal.FindFirst("name")?.Value ?? result.Account.Username,
         };
     }
 
