@@ -52,21 +52,15 @@
                             <Grid RowSpacing="5" Padding="5">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
-                                    <!--<RowDefinition Height="Auto" />-->
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <Label Text="{Binding Name}" />
-                                <!--<Label Grid.Row="1" Text="{Binding UserReplyString}" />-->
                                 <Label Grid.Column="1" Grid.RowSpan="2" HorizontalOptions="EndAndExpand" Text="{Binding UserReplyString}" TextColor="{Binding IsAttending, Converter={StaticResource boolToColor}}"/>
                             </Grid>
                         </ViewCell>
-                        <!--<TextCell Text="{Binding Name}"
-                                  Detail="{Binding UserReplyString}"
-                                  TextColor="Black"
-                                  DetailColor="{Binding IsAttending, Converter={StaticResource boolToColor}}"/>-->
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
