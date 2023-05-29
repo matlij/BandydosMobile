@@ -11,41 +11,62 @@
     <ContentPage.Resources>
         <converters:BoolToRedGreenConverter x:Key="boolToColor" />
     </ContentPage.Resources>
-    <StackLayout Padding="30" Spacing="20">
-        <Grid RowSpacing="5" ColumnSpacing="10" VerticalOptions="Start">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-            <Label Grid.Row="0" Text="Tid:" />
-            <Label Grid.Row="0" Grid.Column="1" Text="{Binding Event.Time}" FontAttributes="Bold"/>
-            <Label Grid.Row="1" Text="Datum:" />
-            <Label Grid.Row="1" Grid.Column="1" Text="{Binding Event.DateString}" FontAttributes="Bold"/>
-            <Label Grid.Row="2" Text="Plats:" />
-            <Label Grid.Row="2" Grid.Column="1" Text="{Binding Event.Address.FullAddress}" TextColor="Blue" TextDecorations="Underline">
-                <Label.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding AddressTappedCommand}" />
-                </Label.GestureRecognizers>
-            </Label>
-            <Label Grid.Row="3" Text="Kommer:"/>
-            <Label Grid.Row="3" Grid.Column="1" Text="{Binding Event.UsersAttending}" FontAttributes="Bold"/>
-        </Grid>
+    <StackLayout Padding="20" Spacing="20">
+        <StackLayout Spacing="5">
+            <Label Text="Info" FontAttributes="Bold"/>
+            <Grid RowSpacing="5" ColumnSpacing="10" VerticalOptions="Start" Padding="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Row="0" Text="Tid:" />
+                <Label Grid.Row="0" Grid.Column="1" Text="{Binding Event.Time}" FontAttributes="Bold"/>
+                <Label Grid.Row="1" Text="Datum:" />
+                <Label Grid.Row="1" Grid.Column="1" Text="{Binding Event.DateString}" FontAttributes="Bold"/>
+                <Label Grid.Row="2" Text="Plats:" />
+                <Label Grid.Row="2" Grid.Column="1" Text="{Binding Event.Address.FullAddress}" TextColor="Blue" TextDecorations="Underline">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding AddressTappedCommand}" />
+                    </Label.GestureRecognizers>
+                </Label>
+                <Label Grid.Row="3" Text="Kommer:"/>
+                <Label Grid.Row="3" Grid.Column="1" Text="{Binding Event.UsersAttending}" FontAttributes="Bold"/>
+                <Label Grid.Row="4" Text="Materialare:"/>
+                <Label Grid.Row="4" Grid.Column="1" Text="{Binding Event.UsersAttending}" FontAttributes="Bold"/>
+            </Grid>
+        </StackLayout>
 
-        <StackLayout Spacing="10" VerticalOptions="CenterAndExpand">
-            <Label Text="Spelarlista:" />
+        <StackLayout Spacing="5" VerticalOptions="CenterAndExpand">
+            <Label Text="Spelarlista:" FontAttributes="Bold"/>
             <ListView ItemsSource="{Binding Users}">
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="models:EventUser">
-                        <TextCell Text="{Binding Name}"
+                        <ViewCell>
+                            <Grid RowSpacing="5" Padding="5">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <!--<RowDefinition Height="Auto" />-->
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Label Text="{Binding Name}" />
+                                <!--<Label Grid.Row="1" Text="{Binding UserReplyString}" />-->
+                                <Label Grid.Column="1" Grid.RowSpan="2" HorizontalOptions="EndAndExpand" Text="{Binding UserReplyString}" TextColor="{Binding IsAttending, Converter={StaticResource boolToColor}}"/>
+                            </Grid>
+                        </ViewCell>
+                        <!--<TextCell Text="{Binding Name}"
                                   Detail="{Binding UserReplyString}"
                                   TextColor="Black"
-                                  DetailColor="{Binding IsAttending, Converter={StaticResource boolToColor}}"/>
+                                  DetailColor="{Binding IsAttending, Converter={StaticResource boolToColor}}"/>-->
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
