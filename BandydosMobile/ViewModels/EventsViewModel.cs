@@ -28,11 +28,15 @@ public partial class EventsViewModel : BaseViewModel
         _authenticator = authenticator;
     }
 
+    public void OnAppearing()
+    {
+        // From docs: Manually setting the IsRefreshing property to true will trigger the refresh visualization, and will execute the ICommand defined by the Command property.
+        IsRefreshing = true;
+    }
+
     [RelayCommand]
     public async Task LoadItems()
     {
-        IsRefreshing = true;
-
         try
         {
             var user = await _authenticator.GetLoggedInUserAsync();

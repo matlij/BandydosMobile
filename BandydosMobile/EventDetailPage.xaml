@@ -45,7 +45,7 @@
         </StackLayout>
 
         <StackLayout Spacing="5" VerticalOptions="CenterAndExpand">
-            <Label Text="Spelarlista:" FontAttributes="Bold"/>
+            <Label Text="Spelarlista" FontAttributes="Bold"/>
             <ListView ItemsSource="{Binding Users}">
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="models:EventUser">
