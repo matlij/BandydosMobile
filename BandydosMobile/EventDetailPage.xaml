@@ -69,6 +69,7 @@
 
         <StackLayout VerticalOptions="End" Spacing="30">
             <Button Text="{Binding EquipmentBtnText}"
+                    TextColor="White"
                     Command="{Binding EquipmentManagerTappedCommand}"
                     BackgroundColor="{Binding IsEquipmentManager, Converter={StaticResource invertedBoolToColor}}"
                     HorizontalOptions="FillAndExpand"/>

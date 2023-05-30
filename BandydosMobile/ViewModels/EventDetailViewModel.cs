@@ -11,6 +11,7 @@ namespace BandydosMobile.ViewModels
     public partial class EventDetailViewModel : BaseViewModel
     {
         [ObservableProperty]
+        [NotifyCanExecuteChangedFor(nameof(EquipmentManagerTappedCommand))]
         private Event _event = new();
 
         [ObservableProperty]
@@ -77,10 +78,17 @@ namespace BandydosMobile.ViewModels
         [RelayCommand]
         public async void AttendTapped(object obj)
         {
-            await UpdateUser(u => u.UserReply = u.IsAttending ? EventReply.NotAttending : EventReply.Attending);
+            await UpdateUser(u => 
+            {
+                u.UserReply = u.IsAttending ? EventReply.NotAttending : EventReply.Attending;
+                if (u.IsEquipmentManager && !u.IsAttending)
+                {
+                    u.IsEquipmentManager = false;
+                }
+            });
         }
 
-        [RelayCommand]
+        [RelayCommand(CanExecute = nameof(CanBeEquipmentManager))]
         public async Task EquipmentManagerTapped()
         {
             await UpdateUser(u => u.IsEquipmentManager = !u.IsEquipmentManager);
@@ -192,7 +200,7 @@ namespace BandydosMobile.ViewModels
                 ? "Ta bort mig som materialare"
                 : "Jag kan ta med bollar, västar mm";
 
-            EquipmentManager = @event.Users.SingleOrDefault(u => u.IsEquipmentManager)?.Name ?? "INGEN!";
+            EquipmentManager = @event.Users.SingleOrDefault(u => u.IsEquipmentManager)?.Name ?? "(ingen)";
         }
 
         private void UpdateEventUserCollection(Event @event)
@@ -202,6 +210,18 @@ namespace BandydosMobile.ViewModels
             {
                 Users.Add(eventUser);
             }
+        }
+
+        private bool CanBeEquipmentManager()
+        {
+            var isAttending = Event.Users.FirstOrDefault(u => u.UserId == _user?.Id)?.IsAttending ?? false;
+            if (!isAttending)
+            {
+                return false;
+            }
+
+            var equipmentManager = Event.Users.SingleOrDefault(u => u.IsEquipmentManager);
+            return equipmentManager == null || equipmentManager.UserId == _user?.Id;
         }
     }
 }
