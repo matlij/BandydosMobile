@@ -13,9 +13,9 @@ public partial class MainPage : ContentPage
         BindingContext = _viewModel = viewModel;
     }
 
-    protected override async void OnAppearing()
+    protected override void OnAppearing()
     {
-        await _viewModel.LoadItems();
+        _viewModel.OnAppearing();
     }
 
     private async void MyPage_Clicked(object sender, EventArgs e)
