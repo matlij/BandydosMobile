@@ -10,6 +10,7 @@
              Title="{Binding Title}">
     <ContentPage.Resources>
         <converters:BoolToRedGreenConverter x:Key="boolToColor" />
+        <converters:InvertedBoolToRedGreenConverter x:Key="invertedBoolToColor" />
     </ContentPage.Resources>
     <StackLayout Padding="20" Spacing="20">
         <StackLayout Spacing="5">
@@ -39,7 +40,7 @@
                 <Label Grid.Row="3" Text="Kommer:"/>
                 <Label Grid.Row="3" Grid.Column="1" Text="{Binding Event.UsersAttending}" FontAttributes="Bold"/>
                 <Label Grid.Row="4" Text="Materialare:"/>
-                <Label Grid.Row="4" Grid.Column="1" Text="{Binding Event.UsersAttending}" FontAttributes="Bold"/>
+                <Label Grid.Row="4" Grid.Column="1" Text="{Binding EquipmentManager}" FontAttributes="Bold"/>
             </Grid>
         </StackLayout>
 
@@ -58,7 +59,7 @@
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <Label Text="{Binding Name}" />
-                                <Label Grid.Column="1" Grid.RowSpan="2" HorizontalOptions="EndAndExpand" Text="{Binding UserReplyString}" TextColor="{Binding IsAttending, Converter={StaticResource boolToColor}}"/>
+                                <Label Grid.Column="1" Grid.RowSpan="2" FontAttributes="Bold" HorizontalOptions="EndAndExpand" Text="{Binding UserReplyString}" TextColor="{Binding IsAttending, Converter={StaticResource boolToColor}}"/>
                             </Grid>
                         </ViewCell>
                     </DataTemplate>
@@ -66,11 +67,16 @@
             </ListView>
         </StackLayout>
 
-        <StackLayout VerticalOptions="End">
+        <StackLayout VerticalOptions="End" Spacing="30">
+            <Button Text="{Binding EquipmentBtnText}"
+                    Command="{Binding EquipmentManagerTappedCommand}"
+                    BackgroundColor="{Binding IsEquipmentManager, Converter={StaticResource invertedBoolToColor}}"
+                    HorizontalOptions="FillAndExpand"/>
             <Button Text="{Binding AttendBtnText}"
                     Command="{Binding AttendTappedCommand}"
-                    BackgroundColor="{Binding AttendBtnColor}"
-                    HorizontalOptions="FillAndExpand"/>
+                    BackgroundColor="{Binding IsAttending, Converter={StaticResource invertedBoolToColor}}"
+                    HorizontalOptions="FillAndExpand"
+                    HeightRequest="60"/>
         </StackLayout>
     </StackLayout>
 </ContentPage>

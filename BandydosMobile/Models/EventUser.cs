@@ -26,6 +26,7 @@ namespace BandydosMobile.Models
         public bool IsAttending => UserReply == EventReply.Attending;
 
         public bool IsOwner { get; set; }
+        public bool IsEquipmentManager { get; set; }
         public EventReply UserReply { get; set; }
 
         public string UserReplyString 
@@ -41,7 +42,6 @@ namespace BandydosMobile.Models
                 };
             }
         }
-
 
         public bool Equals(EventUser other)
         {

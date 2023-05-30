@@ -12,14 +12,22 @@ namespace BandydosMobile.ViewModels
     {
         [ObservableProperty]
         private Event _event = new();
+
         [ObservableProperty]
         private string _attendBtnText = string.Empty;
         [ObservableProperty]
-        private Color? _attendBtnColor;
-        [ObservableProperty]
         private bool _isAttending;
+
+        [ObservableProperty]
+        private string _equipmentBtnText = string.Empty;
+        [ObservableProperty]
+        private bool _isEquipmentManager;
+        [ObservableProperty]
+        private string _equipmentManager;
+
         [ObservableProperty]
         private string _itemId = string.Empty;
+
         [ObservableProperty]
         private ObservableCollection<EventUser> users = new();
 
@@ -69,30 +77,36 @@ namespace BandydosMobile.ViewModels
         [RelayCommand]
         public async void AttendTapped(object obj)
         {
+            await UpdateUser(u => u.UserReply = u.IsAttending ? EventReply.NotAttending : EventReply.Attending);
+        }
+
+        [RelayCommand]
+        public async Task EquipmentManagerTapped()
+        {
+            await UpdateUser(u => u.IsEquipmentManager = !u.IsEquipmentManager);
+        }
+
+        private async Task UpdateUser(Action<EventUser> updateUserAction)
+        {
             try
             {
-                IsBusy = true;
+                IsBusy= true;
 
                 if (_user == null)
                 {
                     await Shell.Current.GoToAsync(nameof(LoginPage));
                     return;
                 }
-
-                var eventUser = AddToEventIfNotExists(_user, _event);
+                var eventUser = GetAndAddEventUserIfNotExists(_user, _event);
 
                 // Update user name if not set from before
                 eventUser.Name = _user.Name;
-
-                // Switch user reply to the opposite of the current reply
-                eventUser.UserReply = eventUser.IsAttending
-                    ? EventReply.NotAttending
-                    : EventReply.Attending;
+                updateUserAction(eventUser);
 
                 var success = await _eventUserDataStore.UpdateAsync(_event.Id.ToString(), eventUser);
                 if (success)
                 {
-                    UpdateObservableProperties(_event, _user.Id);
+                    UpdateObservableProperties(_event, eventUser.UserId);
                 }
                 else
                 {
@@ -109,7 +123,7 @@ namespace BandydosMobile.ViewModels
             }
         }
 
-        private static EventUser AddToEventIfNotExists(User user, Event @event)
+        private static EventUser GetAndAddEventUserIfNotExists(User user, Event @event)
         {
             var eventUser = @event.Users.FirstOrDefault(u => u.UserId == user.Id);
             if (eventUser == null)
@@ -172,9 +186,13 @@ namespace BandydosMobile.ViewModels
             AttendBtnText = IsAttending
                 ? "Av"
                 : "På!";
-            AttendBtnColor = IsAttending
-                ? Colors.Red
-                : Colors.Green;
+
+            IsEquipmentManager = user?.IsEquipmentManager ?? false;
+            EquipmentBtnText = IsEquipmentManager
+                ? "Ta bort mig som materialare"
+                : "Jag kan ta med bollar, västar mm";
+
+            EquipmentManager = @event.Users.SingleOrDefault(u => u.IsEquipmentManager)?.Name ?? "INGEN!";
         }
 
         private void UpdateEventUserCollection(Event @event)
