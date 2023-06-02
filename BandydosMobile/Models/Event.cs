@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Linq;
+﻿using System.Collections.ObjectModel;
 
 namespace BandydosMobile.Models
 {
@@ -8,9 +6,10 @@ namespace BandydosMobile.Models
     {
         public Guid Id { get; set; }
         public DateTimeOffset Date { get; set; }
-        public string Time => $"{Date.TimeOfDay:hh\\:mm}";
-        public string DateString => $"{Date.Date.ToLongDateString()}";
-        public string DaysLeft { get => $"Dagar kvar: {(Date - DateTime.Now).Days}"; }
+        public DateTimeOffset DateLocalTime => Date.ToLocalTime();
+        public string Time => $"{DateLocalTime.TimeOfDay:hh\\:mm}";
+        public string DateString => $"{DateLocalTime.Date.ToLongDateString()}";
+        public string DaysLeft { get => $"Dagar kvar: {(DateLocalTime - DateTime.Now).Days}"; }
         public EventType? EventType { get; set; }
         public Address? Address { get; set; }
         public ObservableCollection<EventUser> Users { get; set; } = new();
