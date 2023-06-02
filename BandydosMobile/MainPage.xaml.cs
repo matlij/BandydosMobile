@@ -21,6 +21,5 @@ public partial class MainPage : ContentPage
     private async void MyPage_Clicked(object sender, EventArgs e)
     {
         await _viewModel.GoToUserProfile();
-
     }
 }

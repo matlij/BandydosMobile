@@ -4,6 +4,7 @@ using BandydosMobile.Repository;
 using BandydosMobile.Services;
 using BandydosMobile.ViewModels;
 using CommunityToolkit.Maui;
+using Plugin.LocalNotification;
 
 namespace BandydosMobile;
 
@@ -14,7 +15,8 @@ public static class MauiProgram
 		var builder = MauiApp.CreateBuilder();
 		builder
 			.UseMauiApp<App>()
-			.ConfigureFonts(fonts =>
+            .UseLocalNotification()
+            .ConfigureFonts(fonts =>
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
